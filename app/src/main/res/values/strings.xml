@@ -11,4 +11,11 @@
     <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
     <string name="main_button">Create new Strategy</string>
     <string name="title_activity_new_strategy">NewStrategyActivity</string>
+    <string name="newstrategy_startingamount">Starting amount</string>
+    
+    <string-array name="strategy_array">
+        <item>Martingale</item>
+        <item>Paroli</item>
+        <item>Fibonacci</item>
+    </string-array>
 </resources>
