@@ -31,6 +31,14 @@
             android:name="com.google.android.gms.ads.AdActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
             android:theme="@android:style/Theme.Translucent" />
+        <activity
+            android:name=".NewStrategyActivity"
+            android:label="@string/title_activity_new_strategy"
+            android:parentActivityName=".MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.zenbarrier.betonblack.MainActivity" />
+        </activity>
     </application>
 
 </manifest>
