@@ -3,10 +3,15 @@ package com.zenbarrier.betonblack;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 
+import android.content.ContentValues;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 public class NewStrategyActivity extends AppCompatActivity {
@@ -14,6 +19,9 @@ public class NewStrategyActivity extends AppCompatActivity {
     private static final String TOAST_TEXT = "Test ads are being shown. "
             + "To show live ads, replace the ad unit ID in res/values/strings.xml with your own ad unit ID.";
 
+    private EditText mStartingMoney;
+    private EditText mMinBet, mMaxBet;
+    private Spinner mStrategyChoice;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,7 +34,12 @@ public class NewStrategyActivity extends AppCompatActivity {
                 .setRequestAgent("android_studio:ad_template").build();
         adView.loadAd(adRequest);
 
-        // Toasts the test ad message on the screen. Remove this after defining your own ad unit ID.
+        mStartingMoney = (EditText) findViewById(R.id.editText_newStrategy_startingMoney);
+        mMinBet = (EditText) findViewById(R.id.editText_newStrategy_minimumBet);
+        mMaxBet = (EditText) findViewById(R.id.editText_newStrategy_maximumBet);
+        mStrategyChoice = (Spinner) findViewById(R.id.spinner_newStrategy_strategyChoice);
+
+        //TODO Toasts the test ad message on the screen. Remove this after defining your own ad unit ID.
         Toast.makeText(this, TOAST_TEXT, Toast.LENGTH_LONG).show();
     }
 
@@ -52,4 +65,25 @@ public class NewStrategyActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    public void saveStrategy(View view) {
+        SQLiteDatabase db = this.openOrCreateDatabase("strategies", MODE_PRIVATE, null);
+        int startingMoney = Integer.parseInt(mStartingMoney.getText().toString());
+        int minBet = Integer.parseInt(mMinBet.getText().toString());
+        int maxBet = Integer.parseInt(mMaxBet.getText().toString());
+        int strategyChoice = mStrategyChoice.getSelectedItemPosition();
+
+        db.execSQL("CREATE TABLE IF NOT EXISTS strategies " +
+                "(starting_money INT, " +
+                "min_bet INT, " +
+                "max_bet INT, " +
+                "strategy_choice INT, " +
+                "id INTEGER PRIMARY KEY)");
+
+        ContentValues values = new ContentValues();
+        values.put("starting_money", startingMoney);
+        values.put("min_bet", minBet);
+        values.put("max_bet", maxBet);
+        values.put("strategy_choice", strategyChoice);
+        db.insert("strategies", null, values);
+    }
 }
