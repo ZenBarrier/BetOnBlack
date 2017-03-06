@@ -14,6 +14,10 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+
 public class NewStrategyActivity extends AppCompatActivity {
     // Remove the below line after defining your own ad unit ID.
     private static final String TOAST_TEXT = "Test ads are being shown. "
@@ -66,24 +70,27 @@ public class NewStrategyActivity extends AppCompatActivity {
     }
 
     public void saveStrategy(View view) {
-        SQLiteDatabase db = this.openOrCreateDatabase("strategies", MODE_PRIVATE, null);
+        SQLiteDatabase db = this.openOrCreateDatabase("Strategy.db", MODE_PRIVATE, null);
         int startingMoney = Integer.parseInt(mStartingMoney.getText().toString());
         int minBet = Integer.parseInt(mMinBet.getText().toString());
         int maxBet = Integer.parseInt(mMaxBet.getText().toString());
         int strategyChoice = mStrategyChoice.getSelectedItemPosition();
 
-        db.execSQL("CREATE TABLE IF NOT EXISTS strategies " +
-                "(starting_money INT, " +
-                "min_bet INT, " +
-                "max_bet INT, " +
-                "strategy_choice INT, " +
-                "id INTEGER PRIMARY KEY)");
+        Strategy strategy = new Strategy("name", minBet, maxBet, strategyChoice);
 
-        ContentValues values = new ContentValues();
-        values.put("starting_money", startingMoney);
-        values.put("min_bet", minBet);
-        values.put("max_bet", maxBet);
-        values.put("strategy_choice", strategyChoice);
-        db.insert("strategies", null, values);
+        db.execSQL("CREATE TABLE IF NOT EXISTS strategyList " +
+                "(id INTEGER PRIMARY KEY, " +
+                "strategy BLOB);");
+
+        try(ByteArrayOutputStream b = new ByteArrayOutputStream()){
+            try(ObjectOutputStream o = new ObjectOutputStream(b)) {
+                o.writeObject(strategy);
+                ContentValues values = new ContentValues();
+                values.put("strategy", b.toByteArray());
+                db.insert("strategyList", null, values);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

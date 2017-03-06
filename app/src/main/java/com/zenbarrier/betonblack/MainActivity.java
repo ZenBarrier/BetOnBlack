@@ -4,18 +4,34 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
+
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     // Remove the below line after defining your own ad unit ID.
     private static final String TOAST_TEXT = "Test ads are being shown. "
             + "To show live ads, replace the ad unit ID in res/values/strings.xml with your own ad unit ID.";
 
+    RecyclerView mRecyclerView;
+    RecyclerView.Adapter mAdapter;
+    RecyclerView.LayoutManager mLayoutManager;
+    List<Strategy> mStrategyList;
+    SQLiteDatabase mDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,8 +44,54 @@ public class MainActivity extends AppCompatActivity {
                 .setRequestAgent("android_studio:ad_template").build();
         adView.loadAd(adRequest);
 
+        mRecyclerView = (RecyclerView) findViewById(R.id.recylerView_main_list);
+        mStrategyList = new ArrayList<>();
+        mLayoutManager = new LinearLayoutManager(this);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        mDatabase = this.openOrCreateDatabase("Strategy.db", MODE_PRIVATE, null);
+        mAdapter = new MyMainAdapter(mStrategyList);
+        mRecyclerView.setAdapter(mAdapter);
+
+        DatabaseLoader databaseLoader = new DatabaseLoader();
+        databaseLoader.execute();
+
         // Toasts the test ad message on the screen. Remove this after defining your own ad unit ID.
         Toast.makeText(this, TOAST_TEXT, Toast.LENGTH_LONG).show();
+    }
+
+    private class DatabaseLoader extends AsyncTask<Void, Void, Void>{
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            Cursor cursor = mDatabase.rawQuery("select * from strategyList;", null);
+            if (cursor.moveToFirst()) {
+                while (!cursor.isAfterLast()) {
+                    byte[] bytes = cursor.getBlob(cursor.getColumnIndex("strategy"));
+                    try (ByteArrayInputStream b = new ByteArrayInputStream(bytes)) {
+                        try (ObjectInputStream o = new ObjectInputStream(b)) {
+                            Strategy strategy = (Strategy) o.readObject();
+                            cursor.moveToNext();
+                            mStrategyList.add(strategy);
+                        } catch (ClassNotFoundException e) {
+                            e.printStackTrace();
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+                return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+        }
     }
 
     public void createNewStrategy(View view){

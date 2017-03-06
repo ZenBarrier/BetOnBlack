@@ -25,4 +25,12 @@
         android:onClick="createNewStrategy"
         android:text="@string/main_button" />
 
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recylerView_main_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/buttonMainNewStrategy"
+        android:layout_above="@+id/adView" />
+
 </RelativeLayout>
