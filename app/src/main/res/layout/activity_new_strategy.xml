@@ -46,15 +46,15 @@
                 android:id="@+id/textView_newStrategy_startingMoney"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/newstrategy_startingamount" />
+                android:text="@string/newstrategy_strategyname" />
 
             <EditText
-                android:id="@+id/editText_newStrategy_startingMoney"
+                android:id="@+id/editText_newStrategy_strategyName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="12dp"
                 android:ems="10"
-                android:inputType="number" />
+                android:inputType="textPersonName" />
 
             <TextView
                 android:id="@+id/textView_newStrategy_minimumBet"

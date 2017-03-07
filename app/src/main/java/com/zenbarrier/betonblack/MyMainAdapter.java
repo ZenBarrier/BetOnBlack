@@ -51,4 +51,10 @@ public class MyMainAdapter extends RecyclerView.Adapter<MyMainAdapter.ViewHolder
     public int getItemCount() {
         return mStrategyList.size();
     }
+
+    public void removeItem(int position){
+        mStrategyList.remove(position);
+        notifyItemRemoved(position);
+        notifyItemRangeChanged(position, getItemCount());
+    }
 }

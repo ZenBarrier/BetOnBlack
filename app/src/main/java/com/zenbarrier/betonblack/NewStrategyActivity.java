@@ -23,9 +23,10 @@ public class NewStrategyActivity extends AppCompatActivity {
     private static final String TOAST_TEXT = "Test ads are being shown. "
             + "To show live ads, replace the ad unit ID in res/values/strings.xml with your own ad unit ID.";
 
-    private EditText mStartingMoney;
+    private EditText mStrategyName;
     private EditText mMinBet, mMaxBet;
     private Spinner mStrategyChoice;
+    private StrategyDbHelper mDbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,10 +39,11 @@ public class NewStrategyActivity extends AppCompatActivity {
                 .setRequestAgent("android_studio:ad_template").build();
         adView.loadAd(adRequest);
 
-        mStartingMoney = (EditText) findViewById(R.id.editText_newStrategy_startingMoney);
+        mStrategyName = (EditText) findViewById(R.id.editText_newStrategy_strategyName);
         mMinBet = (EditText) findViewById(R.id.editText_newStrategy_minimumBet);
         mMaxBet = (EditText) findViewById(R.id.editText_newStrategy_maximumBet);
         mStrategyChoice = (Spinner) findViewById(R.id.spinner_newStrategy_strategyChoice);
+        mDbHelper = new StrategyDbHelper(this);
 
         //TODO Toasts the test ad message on the screen. Remove this after defining your own ad unit ID.
         Toast.makeText(this, TOAST_TEXT, Toast.LENGTH_LONG).show();
@@ -70,27 +72,18 @@ public class NewStrategyActivity extends AppCompatActivity {
     }
 
     public void saveStrategy(View view) {
-        SQLiteDatabase db = this.openOrCreateDatabase("Strategy.db", MODE_PRIVATE, null);
-        int startingMoney = Integer.parseInt(mStartingMoney.getText().toString());
+        SQLiteDatabase db = mDbHelper.getWritableDatabase();
+        String strategyName = mStrategyName.getText().toString();
         int minBet = Integer.parseInt(mMinBet.getText().toString());
         int maxBet = Integer.parseInt(mMaxBet.getText().toString());
         int strategyChoice = mStrategyChoice.getSelectedItemPosition();
 
-        Strategy strategy = new Strategy("name", minBet, maxBet, strategyChoice);
+        ContentValues values = new ContentValues();
+        values.put(StrategyContract.StrategyEntry.COLUMN_MIN_BET, minBet);
+        values.put(StrategyContract.StrategyEntry.COLUMN_MAX_BET, maxBet);
+        values.put(StrategyContract.StrategyEntry.COLUMN_STRATEGY_CHOICE, strategyChoice);
+        values.put(StrategyContract.StrategyEntry.COLUMN_STRATEGY_NAME, strategyName);
 
-        db.execSQL("CREATE TABLE IF NOT EXISTS strategyList " +
-                "(id INTEGER PRIMARY KEY, " +
-                "strategy BLOB);");
-
-        try(ByteArrayOutputStream b = new ByteArrayOutputStream()){
-            try(ObjectOutputStream o = new ObjectOutputStream(b)) {
-                o.writeObject(strategy);
-                ContentValues values = new ContentValues();
-                values.put("strategy", b.toByteArray());
-                db.insert("strategyList", null, values);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        db.insert(StrategyContract.StrategyEntry.TABLE_NAME, null, values);
     }
 }

@@ -9,14 +9,16 @@ import java.io.Serializable;
 
 public class Strategy implements Serializable{
     String name;
+    long _id;
     int minBet;
     int maxBet;
     int strategyChoice;
 
-    public Strategy(String strategyName, int min, int max, int choice){
+    public Strategy(long id, String strategyName, int min, int max, int choice){
         name = strategyName;
         minBet = min;
         maxBet = max;
         strategyChoice = choice;
+        _id = id;
     }
 }
