@@ -95,6 +95,7 @@ public class MainActivity extends AppCompatActivity {
                 Strategy strategy = new Strategy(itemId, itemName, itemMin, itemMax, itemChoice);
                 mStrategyList.add(strategy);
             }
+            cursor.close();
 
             return null;
         }
@@ -158,7 +159,12 @@ public class MainActivity extends AppCompatActivity {
                 int position = viewHolder.getAdapterPosition();
 
                 if (direction == ItemTouchHelper.LEFT){
+                    long id = mStrategyList.get(position)._id;
                     mAdapter.removeItem(position);
+                    SQLiteDatabase db = mDbHelper.getReadableDatabase();
+                    String selection = StrategyContract.StrategyEntry._ID+"=?";
+                    String[] selectArgs = {String.valueOf(id)};
+                    db.delete(StrategyContract.StrategyEntry.TABLE_NAME, selection, selectArgs);
                 } else {
                     //removeView();
                     //edit_position = position;
