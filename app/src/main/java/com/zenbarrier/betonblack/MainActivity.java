@@ -39,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
     public static final int REQUEST_NEW_STRATEGY = 1;
     public static final int REQUEST_EDIT_STRATEGY = 2;
     public static final String KEY_STRATEGY = "strategy";
+    public static final String KEY_POSITION = "position";
 
     RecyclerView mRecyclerView;
     MyMainAdapter mAdapter;
@@ -64,15 +65,10 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
                 Intent intent = new Intent( getApplicationContext(),NewStrategyActivity.class);
                 startActivityForResult(intent, REQUEST_NEW_STRATEGY);
-                //createNewStrategy(view);
             }
         });
-
-        Snackbar.make(findViewById(R.id.recylerView_main_list), "hello", Snackbar.LENGTH_SHORT).show();
 
         initValues();
         initSwipe();
@@ -92,10 +88,16 @@ public class MainActivity extends AppCompatActivity {
                 }
                 break;
             case REQUEST_EDIT_STRATEGY:
+                if(resultCode == Activity.RESULT_OK){
+                    int position = data.getIntExtra(KEY_POSITION,0);
+                    Strategy strategy = (Strategy) data.getSerializableExtra(KEY_STRATEGY);
+                    mStrategyList.set(position, strategy);
+                }
                 break;
             default:
                 break;
         }
+        mAdapter.notifyDataSetChanged();
     }
 
     private class DatabaseLoader extends AsyncTask<Void, Void, Void>{
@@ -136,6 +138,7 @@ public class MainActivity extends AppCompatActivity {
                 mStrategyList.add(strategy);
             }
             cursor.close();
+            db.close();
 
             return null;
         }
@@ -145,12 +148,6 @@ public class MainActivity extends AppCompatActivity {
             super.onPostExecute(aVoid);
         }
     }
-
-    public void createNewStrategy(View view){
-        Intent intent = new Intent(this, NewStrategyActivity.class);
-        startActivity(intent);
-    }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -199,13 +196,9 @@ public class MainActivity extends AppCompatActivity {
                 int position = viewHolder.getAdapterPosition();
 
                 if (direction == ItemTouchHelper.LEFT){
-                    long id = mStrategyList.get(position)._id;
-                    mAdapter.removeItem(position);
-                    SQLiteDatabase db = mDbHelper.getReadableDatabase();
-                    String selection = StrategyContract.StrategyEntry._ID+"=?";
-                    String[] selectArgs = {String.valueOf(id)};
-                    db.delete(StrategyContract.StrategyEntry.TABLE_NAME, selection, selectArgs);
+                    deleteStrategy(position);
                 } else {
+                    editStrategy(position);
                     //removeView();
                     //edit_position = position;
                     //alertDialog.setTitle("Edit Country");
@@ -216,7 +209,6 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onChildDraw(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
-
                 Bitmap icon;
                 if(actionState == ItemTouchHelper.ACTION_STATE_SWIPE){
 
@@ -248,6 +240,26 @@ public class MainActivity extends AppCompatActivity {
         };
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
         itemTouchHelper.attachToRecyclerView(mRecyclerView);
+    }
+
+    private void editStrategy(int position) {
+        Intent intent = new Intent( getApplicationContext(),NewStrategyActivity.class);
+        Strategy strategy = mStrategyList.get(position);
+        intent.putExtra(KEY_STRATEGY, strategy);
+        intent.putExtra(KEY_POSITION, position);
+        startActivityForResult(intent, REQUEST_EDIT_STRATEGY);
+    }
+
+    private void deleteStrategy(int position) {
+        long id = mStrategyList.get(position)._id;
+        mAdapter.removeItem(position);
+        SQLiteDatabase db = mDbHelper.getReadableDatabase();
+        String selection = StrategyContract.StrategyEntry._ID+"=?";
+        String[] selectArgs = {String.valueOf(id)};
+        db.delete(StrategyContract.StrategyEntry.TABLE_NAME, selection, selectArgs);
+        Snackbar.make(findViewById(R.id.recylerView_main_list), "Replace with your own action", Snackbar.LENGTH_LONG)
+                .setAction("Action", null).show();
+        db.close();
     }
 
 }

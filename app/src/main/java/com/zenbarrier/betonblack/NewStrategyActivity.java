@@ -19,6 +19,9 @@ public class NewStrategyActivity extends AppCompatActivity {
     private EditText mMinBet, mMaxBet;
     private Spinner mStrategyChoice;
     private StrategyDbHelper mDbHelper;
+    private boolean mIsEditing = false;
+    private long mEditId;
+    private int mPosition = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +34,18 @@ public class NewStrategyActivity extends AppCompatActivity {
         mMaxBet = (EditText) findViewById(R.id.editText_newStrategy_maximumBet);
         mStrategyChoice = (Spinner) findViewById(R.id.spinner_newStrategy_strategyChoice);
         mDbHelper = new StrategyDbHelper(this);
+
+        Intent intent = getIntent();
+        if(intent.hasExtra(MainActivity.KEY_STRATEGY)){
+            Strategy strategy = (Strategy) intent.getSerializableExtra(MainActivity.KEY_STRATEGY);
+            mPosition = intent.getIntExtra(MainActivity.KEY_POSITION, 0);
+            mStrategyName.setText(strategy.name);
+            mMinBet.setText(String.valueOf(strategy.minBet));
+            mMaxBet.setText(String.valueOf(strategy.maxBet));
+            mStrategyChoice.setSelection(strategy.strategyChoice);
+            mIsEditing = true;
+            mEditId = strategy._id;
+        }
     }
 
 
@@ -69,11 +84,21 @@ public class NewStrategyActivity extends AppCompatActivity {
             values.put(StrategyContract.StrategyEntry.COLUMN_STRATEGY_CHOICE, strategyChoice);
             values.put(StrategyContract.StrategyEntry.COLUMN_STRATEGY_NAME, strategyName);
 
-            Long id = db.insert(StrategyContract.StrategyEntry.TABLE_NAME, null, values);
-
-            Strategy strategy = new Strategy(id, strategyName, minBet, maxBet, strategyChoice);
+            Strategy strategy = new Strategy(0, strategyName, minBet, maxBet, strategyChoice);
+            if(mIsEditing){
+                String selection = StrategyContract.StrategyEntry._ID+"=?";
+                String[] selectionArgs = {String.valueOf(mEditId)};
+                db.update(StrategyContract.StrategyEntry.TABLE_NAME, values, selection, selectionArgs);
+                strategy._id = mEditId;
+            }
+            else {
+                Long id = db.insert(StrategyContract.StrategyEntry.TABLE_NAME, null, values);
+                strategy._id = id;
+            }
+            db.close();
             Intent data = new Intent();
             data.putExtra(MainActivity.KEY_STRATEGY ,strategy);
+            data.putExtra(MainActivity.KEY_POSITION ,mPosition);
             setResult(Activity.RESULT_OK, data);
             finish();
         }
