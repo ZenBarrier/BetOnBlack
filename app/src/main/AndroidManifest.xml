@@ -33,7 +33,7 @@
             android:theme="@android:style/Theme.Translucent" />
         <activity
             android:name=".NewStrategyActivity"
-            android:label="@string/title_activity_new_strategy"
+            android:theme="@style/Theme.MyDialog"
             android:parentActivityName=".MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

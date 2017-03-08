@@ -1,97 +1,99 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:ads="http://schemas.android.com/apk/res-auto"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/constraintLayout_newStrategy_root"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.zenbarrier.betonblack.NewStrategyActivity">
 
-    <!-- view for AdMob Banner Ad -->
-    <com.google.android.gms.ads.AdView
-        android:id="@+id/adView"
+
+    <TextView
+        android:id="@+id/textView_newStrategy_strategy"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        ads:adSize="BANNER"
-        ads:adUnitId="@string/banner_ad_unit_id" />
+        android:text="Choose Strategy"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent" />
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_above="@+id/adView">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="10dp">
+    <Spinner
+        android:id="@+id/spinner_newStrategy_strategyChoice"
+        android:layout_width="336dp"
+        android:layout_height="wrap_content"
+        android:entries="@array/strategy_array"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textView_newStrategy_strategy"
+        app:layout_constraintLeft_toLeftOf="parent" />
 
 
-            <TextView
-                android:id="@+id/textView_newStrategy_strategy"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Choose Strategy" />
+    <EditText
+        android:id="@+id/editText_newStrategy_strategyName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPersonName"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView_newStrategy_strategyName" />
+    <TextView
+        android:id="@+id/textView_newStrategy_strategyName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/newstrategy_strategyname"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spinner_newStrategy_strategyChoice"
+        android:labelFor="@id/editText_newStrategy_strategyName"/>
 
-            <Spinner
-                android:id="@+id/spinner_newStrategy_strategyChoice"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                android:entries="@array/strategy_array" />
 
-            <TextView
-                android:id="@+id/textView_newStrategy_startingMoney"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/newstrategy_strategyname" />
+    <EditText
+        android:id="@+id/editText_newStrategy_minimumBet"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView_newStrategy_minimumBet"
+        android:inputType="number"/>
+    <TextView
+        android:id="@+id/textView_newStrategy_minimumBet"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Smallest bet allowed"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editText_newStrategy_strategyName"
+        android:labelFor="@id/editText_newStrategy_minimumBet"/>
 
-            <EditText
-                android:id="@+id/editText_newStrategy_strategyName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                android:ems="10"
-                android:inputType="textPersonName" />
 
-            <TextView
-                android:id="@+id/textView_newStrategy_minimumBet"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Smallest bet allowed" />
+    <EditText
+        android:id="@+id/editText_newStrategy_maximumBet"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="number"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView_newStrategy_maximumBet"/>
+    <TextView
+        android:id="@+id/textView_newStrategy_maximumBet"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editText_newStrategy_minimumBet"
+        android:text="Biggest bet allowed"
+        android:labelFor="@id/editText_newStrategy_maximumBet"/>
 
-            <EditText
-                android:id="@+id/editText_newStrategy_minimumBet"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                android:ems="10"
-                android:inputType="number" />
+    <Button
+        android:id="@+id/button_newStrategy_save"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="saveStrategy"
+        android:text="Save"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editText_newStrategy_maximumBet"/>
 
-            <TextView
-                android:id="@+id/textView_newStrategy_maximumBet"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Biggest bet allowed" />
 
-            <EditText
-                android:id="@+id/editText_newStrategy_maximumBet"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                android:ems="10"
-                android:inputType="number" />
-
-            <Button
-                android:id="@+id/button_newStrategy_save"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:onClick="saveStrategy"
-                android:text="Save" />
-
-        </LinearLayout>
-    </ScrollView>
-
-</RelativeLayout>
+</android.support.constraint.ConstraintLayout>

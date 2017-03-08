@@ -3,6 +3,7 @@ package com.zenbarrier.betonblack;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 
+import android.app.FragmentManager;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -60,7 +61,9 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
-                createNewStrategy(view);
+                Intent intent = new Intent( getApplicationContext(),NewStrategyActivity.class);
+                startActivity(intent);
+                //createNewStrategy(view);
             }
         });
 
