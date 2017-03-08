@@ -1,9 +1,10 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/constraintLayout_newStrategy_root"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/constraintLayout_newStrategy_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="16dp"
     tools:context="com.zenbarrier.betonblack.NewStrategyActivity">
 
 
@@ -12,18 +13,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Choose Strategy"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent" />
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Spinner
         android:id="@+id/spinner_newStrategy_strategyChoice"
-        android:layout_width="336dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:entries="@array/strategy_array"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textView_newStrategy_strategy"
-        app:layout_constraintLeft_toLeftOf="parent" />
+        app:layout_constraintLeft_toLeftOf="@+id/textView_newStrategy_strategy"
+        app:layout_constraintTop_toBottomOf="@+id/textView_newStrategy_strategy" />
 
 
     <EditText
@@ -32,18 +31,17 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="textPersonName"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="@+id/textView_newStrategy_strategyName"
         app:layout_constraintTop_toBottomOf="@+id/textView_newStrategy_strategyName" />
+
     <TextView
         android:id="@+id/textView_newStrategy_strategyName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:labelFor="@id/editText_newStrategy_strategyName"
         android:text="@string/newstrategy_strategyname"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinner_newStrategy_strategyChoice"
-        android:labelFor="@id/editText_newStrategy_strategyName"/>
+        app:layout_constraintLeft_toLeftOf="@+id/spinner_newStrategy_strategyChoice"
+        app:layout_constraintTop_toBottomOf="@+id/spinner_newStrategy_strategyChoice" />
 
 
     <EditText
@@ -51,19 +49,18 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView_newStrategy_minimumBet"
-        android:inputType="number"/>
+        android:inputType="number"
+        app:layout_constraintLeft_toLeftOf="@+id/textView_newStrategy_minimumBet"
+        app:layout_constraintTop_toBottomOf="@+id/textView_newStrategy_minimumBet" />
+
     <TextView
         android:id="@+id/textView_newStrategy_minimumBet"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:labelFor="@id/editText_newStrategy_minimumBet"
         android:text="Smallest bet allowed"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText_newStrategy_strategyName"
-        android:labelFor="@id/editText_newStrategy_minimumBet"/>
+        app:layout_constraintLeft_toLeftOf="@+id/editText_newStrategy_strategyName"
+        app:layout_constraintTop_toBottomOf="@+id/editText_newStrategy_strategyName" />
 
 
     <EditText
@@ -72,18 +69,17 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="number"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView_newStrategy_maximumBet"/>
+        app:layout_constraintLeft_toLeftOf="@+id/textView_newStrategy_maximumBet"
+        app:layout_constraintTop_toBottomOf="@+id/textView_newStrategy_maximumBet" />
+
     <TextView
         android:id="@+id/textView_newStrategy_maximumBet"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText_newStrategy_minimumBet"
+        android:labelFor="@id/editText_newStrategy_maximumBet"
         android:text="Biggest bet allowed"
-        android:labelFor="@id/editText_newStrategy_maximumBet"/>
+        app:layout_constraintLeft_toLeftOf="@+id/editText_newStrategy_minimumBet"
+        app:layout_constraintTop_toBottomOf="@+id/editText_newStrategy_minimumBet" />
 
     <Button
         android:id="@+id/button_newStrategy_save"
@@ -91,9 +87,19 @@
         android:layout_height="wrap_content"
         android:onClick="saveStrategy"
         android:text="Save"
-        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/button_newStrategy_cancel"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText_newStrategy_maximumBet"/>
+        app:layout_constraintTop_toBottomOf="@+id/editText_newStrategy_maximumBet" />
+
+    <Button
+        android:id="@+id/button_newStrategy_cancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="cancelStrategy"
+        android:text="Cancel"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/button_newStrategy_save"
+        app:layout_constraintTop_toBottomOf="@+id/editText_newStrategy_maximumBet" />
 
 
 </android.support.constraint.ConstraintLayout>

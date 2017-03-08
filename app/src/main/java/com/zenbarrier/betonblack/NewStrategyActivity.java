@@ -1,6 +1,8 @@
 package com.zenbarrier.betonblack;
 
+import android.app.Activity;
 import android.content.ContentValues;
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -55,8 +57,8 @@ public class NewStrategyActivity extends AppCompatActivity {
 
     public void saveStrategy(View view) {
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
-        String strategyName = mStrategyName.getText().toString();
         try {
+            String strategyName = mStrategyName.getText().toString();
             int minBet = Integer.parseInt(mMinBet.getText().toString());
             int maxBet = Integer.parseInt(mMaxBet.getText().toString());
             int strategyChoice = mStrategyChoice.getSelectedItemPosition();
@@ -67,10 +69,21 @@ public class NewStrategyActivity extends AppCompatActivity {
             values.put(StrategyContract.StrategyEntry.COLUMN_STRATEGY_CHOICE, strategyChoice);
             values.put(StrategyContract.StrategyEntry.COLUMN_STRATEGY_NAME, strategyName);
 
-            db.insert(StrategyContract.StrategyEntry.TABLE_NAME, null, values);
+            Long id = db.insert(StrategyContract.StrategyEntry.TABLE_NAME, null, values);
+
+            Strategy strategy = new Strategy(id, strategyName, minBet, maxBet, strategyChoice);
+            Intent data = new Intent();
+            data.putExtra(MainActivity.KEY_STRATEGY ,strategy);
+            setResult(Activity.RESULT_OK, data);
+            finish();
         }
         catch (NumberFormatException e){
             findViewById(R.id.constraintLayout_newStrategy_root).startAnimation(AnimationUtils.loadAnimation(this, R.anim.vibrate));
         }
+    }
+
+    public void cancelStrategy(View view) {
+        setResult(Activity.RESULT_CANCELED);
+        finish();
     }
 }

@@ -3,6 +3,7 @@ package com.zenbarrier.betonblack;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 
+import android.app.Activity;
 import android.app.FragmentManager;
 import android.content.Intent;
 import android.database.Cursor;
@@ -35,6 +36,10 @@ public class MainActivity extends AppCompatActivity {
     private static final String TOAST_TEXT = "Test ads are being shown. "
             + "To show live ads, replace the ad unit ID in res/values/strings.xml with your own ad unit ID.";
 
+    public static final int REQUEST_NEW_STRATEGY = 1;
+    public static final int REQUEST_EDIT_STRATEGY = 2;
+    public static final String KEY_STRATEGY = "strategy";
+
     RecyclerView mRecyclerView;
     MyMainAdapter mAdapter;
     RecyclerView.LayoutManager mLayoutManager;
@@ -62,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
                 Intent intent = new Intent( getApplicationContext(),NewStrategyActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent, REQUEST_NEW_STRATEGY);
                 //createNewStrategy(view);
             }
         });
@@ -74,6 +79,23 @@ public class MainActivity extends AppCompatActivity {
 
         // Toasts the test ad message on the screen. Remove this after defining your own ad unit ID.
         Toast.makeText(this, TOAST_TEXT, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch(requestCode){
+            case REQUEST_NEW_STRATEGY:
+                if(resultCode == Activity.RESULT_OK){
+                    Strategy strategy = (Strategy) data.getSerializableExtra(KEY_STRATEGY);
+                    mStrategyList.add(strategy);
+                }
+                break;
+            case REQUEST_EDIT_STRATEGY:
+                break;
+            default:
+                break;
+        }
     }
 
     private class DatabaseLoader extends AsyncTask<Void, Void, Void>{
