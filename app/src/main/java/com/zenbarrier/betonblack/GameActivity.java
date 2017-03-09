@@ -3,8 +3,11 @@ package com.zenbarrier.betonblack;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 
+import android.app.Dialog;
+import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -17,6 +20,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+import android.widget.ViewAnimator;
 
 public class GameActivity extends AppCompatActivity {
     // Remove the below line after defining your own ad unit ID.
@@ -24,9 +28,8 @@ public class GameActivity extends AppCompatActivity {
             + "To show live ads, replace the ad unit ID in res/values/strings.xml with your own ad unit ID.";
 
     Strategy mStrategy;
-    int mCash;
-    boolean mJustStarted = true;
-
+    ViewAnimator mAnimator;
+    private int mCash;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,54 +46,14 @@ public class GameActivity extends AppCompatActivity {
         AdRequest adRequest = new AdRequest.Builder()
                 .setRequestAgent("android_studio:ad_template").build();
         adView.loadAd(adRequest);
+        // Toasts the test ad message on the screen. Remove this after defining your own ad unit ID.
+        Toast.makeText(this, TOAST_TEXT, Toast.LENGTH_LONG).show();
 
         Intent intent = getIntent();
         mStrategy = (Strategy) intent.getSerializableExtra(MainActivity.KEY_STRATEGY);
 
-        getCashDialog();
-
-
-        // Toasts the test ad message on the screen. Remove this after defining your own ad unit ID.
-        Toast.makeText(this, TOAST_TEXT, Toast.LENGTH_LONG).show();
+        mAnimator = (ViewAnimator) findViewById(R.id.viewAnimator_game_view);
     }
-
-    private void getCashDialog() {
-        EditText cash = new EditText(this);
-        cash.setInputType(InputType.TYPE_CLASS_NUMBER);
-        AlertDialog.Builder builder = new AlertDialog.Builder(this)
-                .setMessage("How much money are you gambling with?")
-                .setTitle("Starting Cash").setView(cash)
-                .setCancelable(false)
-                .setPositiveButton("Set",null);
-        if(!mJustStarted){
-            builder.setNegativeButton("Cancel", null);
-        }
-        AlertDialog dialog = builder.create();
-        dialog.setOnShowListener(new DialogInterface.OnShowListener() {
-            @Override
-            public void onShow(DialogInterface dialog) {
-                Button button = ((AlertDialog)dialog).getButton(AlertDialog.BUTTON_POSITIVE);
-                button.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        mJustStarted = false;
-                    }
-                });
-            }
-        });
-        dialog.setOnKeyListener(new DialogInterface.OnKeyListener() {
-            @Override
-            public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
-                if(keyCode == KeyEvent.KEYCODE_BACK){
-                    if(mJustStarted) finish();
-                    else dialog.dismiss();
-                }
-                return true;
-            }
-        });
-        dialog.show();
-    }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -110,4 +73,24 @@ public class GameActivity extends AppCompatActivity {
 
     }
 
+    public void setCash(View view){
+        EditText cashText = (EditText) findViewById(R.id.editText_game_cash);
+        String cashString = cashText.getText().toString();
+        if(cashString.length() == 0){
+            cashText.setError("Enter amount");
+        }else{
+            mCash = Integer.parseInt(cashString);
+            mAnimator.showNext();
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        int index = mAnimator.getDisplayedChild();
+        if(index == 0){
+            super.onBackPressed();
+        }else {
+            mAnimator.showPrevious();
+        }
+    }
 }
