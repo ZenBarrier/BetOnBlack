@@ -1,6 +1,7 @@
 package com.zenbarrier.betonblack;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -55,7 +56,8 @@ class MyMainAdapter extends RecyclerView.Adapter<MyMainAdapter.ViewHolder> {
         holder.view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                v.animate().rotationBy(360f).setDuration(200).start();
+                Intent intent = new Intent(mContext, GameActivity.class);
+                mContext.startActivity(intent);
             }
         });
     }

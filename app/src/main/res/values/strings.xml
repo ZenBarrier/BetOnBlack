@@ -26,4 +26,5 @@
     <string name="newstrategy_cancel">Cancel</string>
     <string name="mainrecycler_min">Min Bet</string>
     <string name="mainrecycler_max">Max Bet</string>
+    <string name="title_activity_game">GameActivity</string>
 </resources>
