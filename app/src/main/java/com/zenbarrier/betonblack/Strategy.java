@@ -7,14 +7,14 @@ import java.io.Serializable;
  * This file is the fragment that holds all the preferences
  */
 
-public class Strategy implements Serializable{
+class Strategy implements Serializable{
     String name;
     long _id;
     int minBet;
     int maxBet;
     int strategyChoice;
 
-    public Strategy(long id, String strategyName, int min, int max, int choice){
+    Strategy(long id, String strategyName, int min, int max, int choice){
         name = strategyName;
         minBet = min;
         maxBet = max;

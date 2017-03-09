@@ -15,19 +15,19 @@ import java.util.List;
  * This file is the fragment that holds all the preferences
  */
 
-public class MyMainAdapter extends RecyclerView.Adapter<MyMainAdapter.ViewHolder> {
-    List<Strategy> mStrategyList;
-    Context mContext;
+class MyMainAdapter extends RecyclerView.Adapter<MyMainAdapter.ViewHolder> {
+    private List<Strategy> mStrategyList;
+    private Context mContext;
 
-    public static class ViewHolder extends RecyclerView.ViewHolder{
-        public View view;
-        public ViewHolder(View itemView) {
+    static class ViewHolder extends RecyclerView.ViewHolder{
+        View view;
+        ViewHolder(View itemView) {
             super(itemView);
             view = itemView;
         }
     }
 
-    public MyMainAdapter(Context context, List<Strategy> strategyList){
+    MyMainAdapter(Context context, List<Strategy> strategyList){
         mStrategyList = strategyList;
         mContext = context;
     }
@@ -39,8 +39,7 @@ public class MyMainAdapter extends RecyclerView.Adapter<MyMainAdapter.ViewHolder
                 .inflate(R.layout.layout_mainrecyclerlist_strategy, parent, false);
         // set the view's size, margins, paddings and layout parameters
 
-        ViewHolder vh = new ViewHolder(v);
-        return vh;
+        return new ViewHolder(v);
     }
 
     @Override
@@ -66,7 +65,7 @@ public class MyMainAdapter extends RecyclerView.Adapter<MyMainAdapter.ViewHolder
         return mStrategyList.size();
     }
 
-    public void removeItem(int position){
+    void removeItem(int position){
         mStrategyList.remove(position);
         notifyItemRemoved(position);
         notifyItemRangeChanged(position, getItemCount());

@@ -63,11 +63,8 @@ public class NewStrategyActivity extends AppCompatActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        if (id == R.id.action_settings) {
-            return true;
-        }
+        return id == R.id.action_settings || super.onOptionsItemSelected(item);
 
-        return super.onOptionsItemSelected(item);
     }
 
     public void saveStrategy(View view) {
@@ -92,8 +89,7 @@ public class NewStrategyActivity extends AppCompatActivity {
                 strategy._id = mEditId;
             }
             else {
-                Long id = db.insert(StrategyContract.StrategyEntry.TABLE_NAME, null, values);
-                strategy._id = id;
+                strategy._id = db.insert(StrategyContract.StrategyEntry.TABLE_NAME, null, values);
             }
             db.close();
             Intent data = new Intent();

@@ -7,15 +7,15 @@ import android.provider.BaseColumns;
  * This file is the fragment that holds all the preferences
  */
 
-public class StrategyContract {
+class StrategyContract {
     private StrategyContract(){}
 
-    public static class StrategyEntry implements BaseColumns{
-        public static final String TABLE_NAME = "strategies";
-        public static final String COLUMN_STRATEGY_NAME = "name";
-        public static final String COLUMN_MIN_BET = "minBet";
-        public static final String COLUMN_MAX_BET = "maxBet";
-        public static final String COLUMN_STRATEGY_CHOICE = "choice";
+    static class StrategyEntry implements BaseColumns{
+        static final String TABLE_NAME = "strategies";
+        static final String COLUMN_STRATEGY_NAME = "name";
+        static final String COLUMN_MIN_BET = "minBet";
+        static final String COLUMN_MAX_BET = "maxBet";
+        static final String COLUMN_STRATEGY_CHOICE = "choice";
 
     }
 }

@@ -9,10 +9,10 @@ import android.database.sqlite.SQLiteOpenHelper;
  * This file is the fragment that holds all the preferences
  */
 
-public class StrategyDbHelper extends SQLiteOpenHelper {
+class StrategyDbHelper extends SQLiteOpenHelper {
 
-    public static final int DATABASE_VERSION = 1;
-    public static final String DATABASE_NAME = "Strategy.db";
+    private static final int DATABASE_VERSION = 1;
+    private static final String DATABASE_NAME = "Strategy.db";
 
     private static final String SQL_CREATE_ENTRIES =
             "CREATE TABLE IF NOT EXISTS " + StrategyContract.StrategyEntry.TABLE_NAME + " (" +
@@ -24,7 +24,7 @@ public class StrategyDbHelper extends SQLiteOpenHelper {
     private static final String SQL_DELETE_ENTRIES =
             "DROP TABLE IF EXISTS " + StrategyContract.StrategyEntry.TABLE_NAME;
 
-    public StrategyDbHelper(Context context) {
+    StrategyDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
