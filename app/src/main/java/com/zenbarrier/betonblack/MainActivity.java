@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
     public static final String KEY_POSITION = "position";
 
     RecyclerView mRecyclerView;
-    MyMainAdapter mAdapter;
+    StrategyAdapter mAdapter;
     RecyclerView.LayoutManager mLayoutManager;
     List<Strategy> mStrategyList;
     StrategyDbHelper mDbHelper;
@@ -171,7 +171,7 @@ public class MainActivity extends AppCompatActivity {
         mStrategyList = new ArrayList<>();
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
-        mAdapter = new MyMainAdapter(this, mStrategyList);
+        mAdapter = new StrategyAdapter(this, mStrategyList);
         mRecyclerView.setAdapter(mAdapter);
         mDbHelper = new StrategyDbHelper(this);
 

@@ -16,7 +16,7 @@ import java.util.List;
  * This file is the fragment that holds all the preferences
  */
 
-class MyMainAdapter extends RecyclerView.Adapter<MyMainAdapter.ViewHolder> {
+class StrategyAdapter extends RecyclerView.Adapter<StrategyAdapter.ViewHolder> {
     private List<Strategy> mStrategyList;
     private Context mContext;
 
@@ -28,7 +28,7 @@ class MyMainAdapter extends RecyclerView.Adapter<MyMainAdapter.ViewHolder> {
         }
     }
 
-    MyMainAdapter(Context context, List<Strategy> strategyList){
+    StrategyAdapter(Context context, List<Strategy> strategyList){
         mStrategyList = strategyList;
         mContext = context;
     }
@@ -37,7 +37,7 @@ class MyMainAdapter extends RecyclerView.Adapter<MyMainAdapter.ViewHolder> {
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // create a new view
         View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.layout_mainrecyclerlist_strategy, parent, false);
+                .inflate(R.layout.adapter_mainrecyclerlist_strategy, parent, false);
         // set the view's size, margins, paddings and layout parameters
 
         return new ViewHolder(v);
@@ -45,7 +45,7 @@ class MyMainAdapter extends RecyclerView.Adapter<MyMainAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        Strategy strategy = mStrategyList.get(position);
+        final Strategy strategy = mStrategyList.get(position);
         ((TextView)holder.view.findViewById(R.id.textView_mainRecyclerlist_name)).setText(String.valueOf(strategy.name));
         ((TextView)holder.view.findViewById(R.id.textView_mainRecyclerlist_minBet)).setText(String.valueOf(strategy.minBet));
         ((TextView)holder.view.findViewById(R.id.textView_mainRecyclerlist_maxBet)).setText(String.valueOf(strategy.maxBet));
@@ -57,6 +57,7 @@ class MyMainAdapter extends RecyclerView.Adapter<MyMainAdapter.ViewHolder> {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(mContext, GameActivity.class);
+                intent.putExtra(MainActivity.KEY_STRATEGY, strategy);
                 mContext.startActivity(intent);
             }
         });
