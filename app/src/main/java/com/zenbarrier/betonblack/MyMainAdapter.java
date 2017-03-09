@@ -1,5 +1,7 @@
 package com.zenbarrier.betonblack;
 
+import android.content.Context;
+import android.content.res.Resources;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +17,7 @@ import java.util.List;
 
 public class MyMainAdapter extends RecyclerView.Adapter<MyMainAdapter.ViewHolder> {
     List<Strategy> mStrategyList;
+    Context mContext;
 
     public static class ViewHolder extends RecyclerView.ViewHolder{
         public View view;
@@ -24,8 +27,9 @@ public class MyMainAdapter extends RecyclerView.Adapter<MyMainAdapter.ViewHolder
         }
     }
 
-    public MyMainAdapter(List<Strategy> strategyList){
+    public MyMainAdapter(Context context, List<Strategy> strategyList){
         mStrategyList = strategyList;
+        mContext = context;
     }
 
     @Override
@@ -45,7 +49,9 @@ public class MyMainAdapter extends RecyclerView.Adapter<MyMainAdapter.ViewHolder
         ((TextView)holder.view.findViewById(R.id.textView_mainRecyclerlist_name)).setText(String.valueOf(strategy.name));
         ((TextView)holder.view.findViewById(R.id.textView_mainRecyclerlist_minBet)).setText(String.valueOf(strategy.minBet));
         ((TextView)holder.view.findViewById(R.id.textView_mainRecyclerlist_maxBet)).setText(String.valueOf(strategy.maxBet));
-        ((TextView)holder.view.findViewById(R.id.textView_mainRecyclerlist_strategyChoice)).setText(String.valueOf(strategy.strategyChoice));
+        Resources res = mContext.getResources();
+        String[] strategies = res.getStringArray(R.array.strategy_array);
+        ((TextView)holder.view.findViewById(R.id.textView_mainRecyclerlist_strategyChoice)).setText(strategies[strategy.strategyChoice]);
 
         holder.view.setOnClickListener(new View.OnClickListener() {
             @Override

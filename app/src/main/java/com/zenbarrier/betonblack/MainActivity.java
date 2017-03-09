@@ -4,7 +4,6 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 
 import android.app.Activity;
-import android.app.FragmentManager;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -117,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
                     StrategyContract.StrategyEntry.COLUMN_MAX_BET,
                     StrategyContract.StrategyEntry.COLUMN_STRATEGY_CHOICE,
             };
-            String sortOrder = StrategyContract.StrategyEntry.COLUMN_STRATEGY_NAME + " DESC";
+            String sortOrder = StrategyContract.StrategyEntry.COLUMN_STRATEGY_NAME + " ASC";
             Cursor cursor = db.query(
                     StrategyContract.StrategyEntry.TABLE_NAME,
                     projection,
@@ -175,7 +174,7 @@ public class MainActivity extends AppCompatActivity {
         mStrategyList = new ArrayList<>();
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
-        mAdapter = new MyMainAdapter(mStrategyList);
+        mAdapter = new MyMainAdapter(this, mStrategyList);
         mRecyclerView.setAdapter(mAdapter);
         mDbHelper = new StrategyDbHelper(this);
 
@@ -199,11 +198,6 @@ public class MainActivity extends AppCompatActivity {
                     deleteStrategy(position);
                 } else {
                     editStrategy(position);
-                    //removeView();
-                    //edit_position = position;
-                    //alertDialog.setTitle("Edit Country");
-                    //et_country.setText(countries.get(position));
-                    //alertDialog.show();
                 }
             }
 
