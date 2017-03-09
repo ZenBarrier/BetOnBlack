@@ -32,7 +32,7 @@ public class MyMainAdapter extends RecyclerView.Adapter<MyMainAdapter.ViewHolder
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // create a new view
         View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.layout_main_strategy, parent, false);
+                .inflate(R.layout.layout_mainrecyclerlist_strategy, parent, false);
         // set the view's size, margins, paddings and layout parameters
 
         ViewHolder vh = new ViewHolder(v);
@@ -42,9 +42,17 @@ public class MyMainAdapter extends RecyclerView.Adapter<MyMainAdapter.ViewHolder
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         Strategy strategy = mStrategyList.get(position);
-        ((TextView)holder.view.findViewById(R.id.textView)).setText(String.valueOf(strategy.maxBet));
-        ((TextView)holder.view.findViewById(R.id.textView2)).setText(String.valueOf(strategy.minBet));
-        ((TextView)holder.view.findViewById(R.id.textView3)).setText(String.valueOf(strategy.strategyChoice));
+        ((TextView)holder.view.findViewById(R.id.textView_mainRecyclerlist_name)).setText(String.valueOf(strategy.name));
+        ((TextView)holder.view.findViewById(R.id.textView_mainRecyclerlist_minBet)).setText(String.valueOf(strategy.minBet));
+        ((TextView)holder.view.findViewById(R.id.textView_mainRecyclerlist_maxBet)).setText(String.valueOf(strategy.maxBet));
+        ((TextView)holder.view.findViewById(R.id.textView_mainRecyclerlist_strategyChoice)).setText(String.valueOf(strategy.strategyChoice));
+
+        holder.view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                v.animate().rotationBy(360f).setDuration(200).start();
+            }
+        });
     }
 
     @Override
