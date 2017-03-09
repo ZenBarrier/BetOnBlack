@@ -19,4 +19,11 @@
         <item>Fibonacci</item>
     </string-array>
     <string name="title_activity_main2">Main2Activity</string>
+    <string name="newStrategy_choosestrategy">Choose Strategy</string>
+    <string name="newstrategy_smallestbetallowed">Smallest bet allowed</string>
+    <string name="newstrategy_biggestbetallowed">Biggest bet allowed</string>
+    <string name="newstrategy_save">Save</string>
+    <string name="newstrategy_cancel">Cancel</string>
+    <string name="mainrecycler_min">Min Bet</string>
+    <string name="mainrecycler_max">Max Bet</string>
 </resources>
