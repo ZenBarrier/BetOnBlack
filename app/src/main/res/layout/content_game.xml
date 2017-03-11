@@ -7,7 +7,8 @@
     android:layout_width="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:showIn="@layout/activity_game"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context="com.zenbarrier.betonblack.GameActivity">
 
     <!-- view for AdMob Banner Ad -->
 
@@ -25,47 +26,54 @@
         android:id="@+id/viewAnimator_game_view"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        ads:layout_constraintBottom_toTopOf="@id/adView"
+        ads:layout_constraintBottom_toTopOf="@+id/adView"
         ads:layout_constraintRight_toRightOf="parent"
         ads:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent">
+        app:layout_constraintLeft_toLeftOf="parent"
+        tools:layout_constraintTop_creator="1"
+        tools:layout_constraintRight_creator="1"
+        tools:layout_constraintBottom_creator="1"
+        tools:layout_constraintLeft_creator="1">
 
-        <LinearLayout
+        <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/textView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="TextView" />
 
             <EditText
                 android:id="@+id/editText_game_cash"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:inputType="number" />
+                android:inputType="number"
+                ads:layout_constraintLeft_toLeftOf="parent"
+                ads:layout_constraintRight_toRightOf="parent"
+                android:layout_marginTop="0dp"
+                ads:layout_constraintTop_toBottomOf="@+id/textView_game_cashLabel" />
+            <TextView
+                android:id="@+id/textView_game_cashLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:labelFor="@id/editText_game_cash"
+                android:text="Enter the amount of money you will gamble with."
+                ads:layout_constraintTop_toTopOf="parent"
+                ads:layout_constraintBottom_toBottomOf="parent"
+                ads:layout_constraintLeft_toLeftOf="parent"
+                ads:layout_constraintRight_toRightOf="parent"/>
 
             <Button
                 android:id="@+id/button2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:onClick="setCash"
-                android:text="Button" />
-        </LinearLayout>
-
-        <android.support.constraint.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TextView
-                android:id="@+id/textView2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="TextView" />
+                android:onClick="setCash"
+                android:text="Button"
+                ads:layout_constraintTop_toBottomOf="@id/editText_game_cash"
+                ads:layout_constraintLeft_toLeftOf="parent"
+                ads:layout_constraintRight_toRightOf="parent"/>
         </android.support.constraint.ConstraintLayout>
+
+        <include layout="@layout/animate_game_info" />
 
     </ViewAnimator>
 
