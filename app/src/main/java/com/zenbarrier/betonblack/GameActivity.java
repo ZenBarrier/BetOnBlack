@@ -19,6 +19,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.NumberPicker;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewAnimator;
 
@@ -27,9 +29,13 @@ public class GameActivity extends AppCompatActivity {
     private static final String TOAST_TEXT = "Test ads are being shown. "
             + "To show live ads, replace the ad unit ID in res/values/strings.xml with your own ad unit ID.";
 
-    Strategy mStrategy;
-    ViewAnimator mAnimator;
-    private int mCash;
+    private Strategy mStrategy;
+    private ViewAnimator mAnimator;
+    private TextView mTextCash, mTextMin, mTextMax, mTextName, mTextOdds, mTextRounds, mTextStrategyMode;
+    private NumberPicker mPickerBet;
+    private int mCash, mMin, mMax, mRounds, mBet;
+    private double mOdds;
+    private String mName, mStrategyMode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,14 +80,57 @@ public class GameActivity extends AppCompatActivity {
     }
 
     public void setCash(View view){
-        EditText cashText = (EditText) findViewById(R.id.editText_game_cash);
+        EditText cashText = (EditText) findViewById(R.id.editText_game0_cash);
         String cashString = cashText.getText().toString();
         if(cashString.length() == 0){
             cashText.setError("Enter amount");
         }else{
             mCash = Integer.parseInt(cashString);
+            initializeInfo();
+            setInfo();
             mAnimator.showNext();
         }
+    }
+
+    private void initializeInfo() {
+        mTextCash = (TextView) findViewById(R.id.textView_game_cash);
+        mTextMin = (TextView) findViewById(R.id.textView_game_min);
+        mTextMax = (TextView) findViewById(R.id.textView_game_max);
+        mTextName = (TextView) findViewById(R.id.textView_game_name);
+        mTextOdds = (TextView) findViewById(R.id.textView_game_odds);
+        mTextRounds = (TextView) findViewById(R.id.textView_game_rounds);
+        mTextStrategyMode = (TextView) findViewById(R.id.textView_game_strategyMode);
+        mPickerBet = (NumberPicker) findViewById(R.id.numberPicker_game_bettingAmount);
+
+        mMin = mStrategy.minBet;
+        mMax = mStrategy.maxBet;
+        String[] modes = getResources().getStringArray(R.array.strategy_array);
+        mStrategyMode = modes[mStrategy.strategyChoice];
+        mName = mStrategy.name;
+
+        mTextName.setText(mName);
+        mTextMin.setText(String.valueOf(mMin));
+        mTextMax.setText(String.valueOf(mMax));
+        mTextStrategyMode.setText(mStrategyMode);
+
+        mPickerBet.setMinValue(mMin);
+    }
+
+    private void setInfo() {
+        mTextCash.setText(String.valueOf(mCash));
+        mTextOdds.setText(String.valueOf(mOdds));
+        mTextRounds.setText(String.valueOf(mRounds));
+
+        mPickerBet.setMaxValue(Math.min(mCash, mMax));
+        mPickerBet.setValue(Math.min(mBet, mMax));
+    }
+
+    public void wonBet(View view){
+
+    }
+
+    public void lostBet(View view){
+
     }
 
     @Override
