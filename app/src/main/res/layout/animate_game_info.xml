@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <TextView
@@ -72,22 +73,24 @@
         android:id="@+id/button_game_win"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Won"
-        android:onClick="lostBet"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintLeft_toRightOf="@+id/button_game_lose"
         android:layout_marginTop="8dp"
+        android:onClick="wonBet"
+        android:text="Won"
+        android:visibility="gone"
+        app:layout_constraintLeft_toRightOf="@+id/button_game_lose"
+        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/numberPicker_game_bettingAmount" />
 
     <Button
         android:id="@+id/button_game_lose"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="wonBet"
+        android:onClick="lostBet"
         android:text="Lost"
-        app:layout_constraintTop_toTopOf="@+id/button_game_win"
+        android:visibility="gone"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toLeftOf="@+id/button_game_win" />
+        app:layout_constraintRight_toLeftOf="@+id/button_game_win"
+        app:layout_constraintTop_toTopOf="@+id/button_game_win" />
 
     <NumberPicker
         android:id="@+id/numberPicker_game_bettingAmount"
@@ -96,4 +99,41 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView_game_odds" />
+
+    <Button
+        android:id="@+id/button_game_startingBet"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        android:onClick="setStartingBet"
+        android:text="Set Starting Bet"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/numberPicker_game_bettingAmount" />
+
+    <Button
+        android:id="@+id/button_game_changeBet"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:onClick="changeBet"
+        android:text="Change Bet"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <TextView
+        android:id="@+id/textView_game_bettingAmount"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:text="TextView"
+        android:gravity="center"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:visibility="invisible"
+        app:layout_constraintTop_toTopOf="@+id/numberPicker_game_bettingAmount"
+        app:layout_constraintBottom_toBottomOf="@id/numberPicker_game_bettingAmount" />
 </android.support.constraint.ConstraintLayout>

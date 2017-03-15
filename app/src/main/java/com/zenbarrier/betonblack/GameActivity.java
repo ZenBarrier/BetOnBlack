@@ -24,6 +24,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewAnimator;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class GameActivity extends AppCompatActivity {
     // Remove the below line after defining your own ad unit ID.
     private static final String TOAST_TEXT = "Test ads are being shown. "
@@ -31,11 +34,16 @@ public class GameActivity extends AppCompatActivity {
 
     private Strategy mStrategy;
     private ViewAnimator mAnimator;
-    private TextView mTextCash, mTextMin, mTextMax, mTextName, mTextOdds, mTextRounds, mTextStrategyMode;
+    private Button mButtonStartBet, mButtonLost, mButtonWon, mButtonChangeBet;
+    private TextView mTextCash, mTextMin, mTextMax, mTextName, mTextOdds, mTextRounds, mTextStrategyMode, mTextBettingAmount;
     private NumberPicker mPickerBet;
-    private int mCash, mMin, mMax, mRounds, mBet;
+    private int mCash, mMin, mMax, mRounds, mBet, mStrategyChoice;
     private double mOdds;
     private String mName, mStrategyMode;
+    private List<Integer> mBetSequence;
+    private boolean isLosingStreak = false;
+    private static final double DOUBLE_ZERO_ODDS = 0.47368421052;//18 black 38 numbers
+    private static final double SINGLE_ZERO_ODDS = 0.48648648648;//18 black 37 numbers
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,6 +101,11 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private void initializeInfo() {
+        mButtonLost = (Button) findViewById(R.id.button_game_lose);
+        mButtonWon = (Button) findViewById(R.id.button_game_win);
+        mButtonStartBet = (Button) findViewById(R.id.button_game_startingBet);
+        mButtonChangeBet = (Button) findViewById(R.id.button_game_changeBet);
+
         mTextCash = (TextView) findViewById(R.id.textView_game_cash);
         mTextMin = (TextView) findViewById(R.id.textView_game_min);
         mTextMax = (TextView) findViewById(R.id.textView_game_max);
@@ -100,12 +113,15 @@ public class GameActivity extends AppCompatActivity {
         mTextOdds = (TextView) findViewById(R.id.textView_game_odds);
         mTextRounds = (TextView) findViewById(R.id.textView_game_rounds);
         mTextStrategyMode = (TextView) findViewById(R.id.textView_game_strategyMode);
+        mTextBettingAmount = (TextView) findViewById(R.id.textView_game_bettingAmount);
+
         mPickerBet = (NumberPicker) findViewById(R.id.numberPicker_game_bettingAmount);
 
         mMin = mStrategy.minBet;
         mMax = mStrategy.maxBet;
         String[] modes = getResources().getStringArray(R.array.strategy_array);
         mStrategyMode = modes[mStrategy.strategyChoice];
+        mStrategyChoice = mStrategy.strategyChoice;
         mName = mStrategy.name;
 
         mTextName.setText(mName);
@@ -114,6 +130,8 @@ public class GameActivity extends AppCompatActivity {
         mTextStrategyMode.setText(mStrategyMode);
 
         mPickerBet.setMinValue(mMin);
+        mBet = mMin;
+        mBetSequence = new ArrayList<>();
     }
 
     private void setInfo() {
@@ -126,11 +144,63 @@ public class GameActivity extends AppCompatActivity {
     }
 
     public void wonBet(View view){
-
+        mCash+=mBet;
+        mBet = mBetSequence.get(0);
+        mBetSequence.clear();
+        mBetSequence.add(mBet);
     }
 
     public void lostBet(View view){
+        mCash-=mBet;
+        calculateOdds();
+        nextBet(true);
+        setInfo();
+    }
 
+    public void setStartingBet(View view){
+        mPickerBet.setEnabled(false);
+        mPickerBet.setVisibility(View.INVISIBLE);
+        mButtonStartBet.setVisibility(View.INVISIBLE);
+
+        mButtonLost.setVisibility(View.VISIBLE);
+        mButtonWon.setVisibility(View.VISIBLE);
+        mButtonChangeBet.setVisibility(View.VISIBLE);
+        mTextBettingAmount.setVisibility(View.VISIBLE);
+        mTextBettingAmount.setText(String.valueOf(mPickerBet.getValue()));
+    }
+    public void changeBet(View view){
+        mPickerBet.setEnabled(true);
+        mTextBettingAmount.setVisibility(View.INVISIBLE);
+        mButtonLost.setVisibility(View.INVISIBLE);
+        mButtonWon.setVisibility(View.INVISIBLE);
+        mButtonChangeBet.setVisibility(View.INVISIBLE);
+
+        mButtonStartBet.setVisibility(View.VISIBLE);
+        mButtonStartBet.setText("Set Betting Amount");
+        mPickerBet.setVisibility(View.VISIBLE);
+    }
+
+    private void nextBet(boolean b) {
+    }
+
+    void calculateOdds(){
+        int cash = mCash;
+        int bet = mBet;
+        int rounds = 0;
+        while(cash >= bet && bet <= mMax){
+            rounds++;
+            cash-=bet;
+            switch (mStrategyChoice){
+                case 0://Martingale
+                    bet <<= 1;
+                    break;
+                case 1://Paroli
+                case 2://Fibonaci
+                default:
+            }
+        }
+        mRounds = rounds;
+        mOdds = Math.pow(1.0-DOUBLE_ZERO_ODDS, rounds);
     }
 
     @Override
