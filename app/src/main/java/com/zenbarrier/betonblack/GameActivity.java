@@ -85,10 +85,13 @@ public class GameActivity extends AppCompatActivity {
         String cashString = cashText.getText().toString();
         if(cashString.length() == 0){
             cashText.setError("Enter amount");
+        }else if(Integer.parseInt(cashString)<mStrategy.minBet){
+            cashText.setError("You need at least $"+mStrategy.minBet+" to make a bet.");
         }else{
             mCash = Integer.parseInt(cashString);
             mStartingCash = mCash;
             initializeInfo();
+            calculateOdds(mMin);
             setInfo();
             mAnimator.showNext();
         }
