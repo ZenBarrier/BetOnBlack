@@ -219,11 +219,17 @@ public class GameActivity extends AppCompatActivity {
                     break;
                 case 1://Paroli
                 case 2://Fibonaci
+                    fibonacci(mStartingBet, rounds);
                 default:
             }
         }
         mRounds = rounds;
         mOdds = Math.pow(1.0-DOUBLE_ZERO_ODDS, rounds);
+    }
+
+    public static int fibonacci(int startingBet, int rounds) {
+        if(rounds <= 2) return startingBet;
+        return fibonacci(startingBet, rounds-2) + fibonacci(startingBet, rounds-1);
     }
 
     @Override
