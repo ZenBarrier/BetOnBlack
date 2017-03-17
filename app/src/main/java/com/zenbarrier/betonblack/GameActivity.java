@@ -3,17 +3,10 @@ package com.zenbarrier.betonblack;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 
-import android.app.Dialog;
-import android.app.DialogFragment;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.InputType;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -37,11 +30,11 @@ public class GameActivity extends AppCompatActivity {
     private Button mButtonStartBet, mButtonLost, mButtonWon, mButtonChangeBet;
     private TextView mTextCash, mTextMin, mTextMax, mTextName, mTextOdds, mTextRounds, mTextStrategyMode, mTextBettingAmount;
     private NumberPicker mPickerBet;
-    private int mCash, mMin, mMax, mRounds, mBet, mStrategyChoice;
+    private int mCash, mMin, mMax, mRounds, mBet, mStrategyChoice, mStartingBet, mStartingCash;
     private double mOdds;
     private String mName, mStrategyMode;
     private List<Integer> mBetSequence;
-    private boolean isLosingStreak = false;
+    private boolean mJustStarted = true;
     private static final double DOUBLE_ZERO_ODDS = 0.47368421052;//18 black 38 numbers
     private static final double SINGLE_ZERO_ODDS = 0.48648648648;//18 black 37 numbers
 
@@ -94,6 +87,7 @@ public class GameActivity extends AppCompatActivity {
             cashText.setError("Enter amount");
         }else{
             mCash = Integer.parseInt(cashString);
+            mStartingCash = mCash;
             initializeInfo();
             setInfo();
             mAnimator.showNext();
@@ -132,32 +126,42 @@ public class GameActivity extends AppCompatActivity {
         mPickerBet.setMinValue(mMin);
         mBet = mMin;
         mBetSequence = new ArrayList<>();
+        mPickerBet.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+            @Override
+            public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
+                calculateOdds(newVal);
+                setInfo();
+            }
+        });
     }
 
     private void setInfo() {
         mTextCash.setText(String.valueOf(mCash));
         mTextOdds.setText(String.valueOf(mOdds));
         mTextRounds.setText(String.valueOf(mRounds));
+        mTextBettingAmount.setText(String.valueOf(mBet));
 
         mPickerBet.setMaxValue(Math.min(mCash, mMax));
-        mPickerBet.setValue(Math.min(mBet, mMax));
+        //mPickerBet.setValue(Math.min(mBet, mMax));
     }
 
     public void wonBet(View view){
+        mJustStarted = false;
         mCash+=mBet;
-        mBet = mBetSequence.get(0);
-        mBetSequence.clear();
-        mBetSequence.add(mBet);
-    }
-
-    public void lostBet(View view){
-        mCash-=mBet;
-        calculateOdds();
-        nextBet(true);
+        mBet = nextBet(false);
+        calculateOdds(mBet);
         setInfo();
     }
 
-    public void setStartingBet(View view){
+    public void lostBet(View view){
+        mJustStarted = false;
+        mCash-=mBet;
+        mBet = nextBet(true);
+        calculateOdds(mBet);
+        setInfo();
+    }
+
+    public void setBet(View view){
         mPickerBet.setEnabled(false);
         mPickerBet.setVisibility(View.INVISIBLE);
         mButtonStartBet.setVisibility(View.INVISIBLE);
@@ -167,6 +171,8 @@ public class GameActivity extends AppCompatActivity {
         mButtonChangeBet.setVisibility(View.VISIBLE);
         mTextBettingAmount.setVisibility(View.VISIBLE);
         mTextBettingAmount.setText(String.valueOf(mPickerBet.getValue()));
+        if(mJustStarted) mStartingBet = mPickerBet.getValue();
+        mBet = mPickerBet.getValue();
     }
     public void changeBet(View view){
         mPickerBet.setEnabled(true);
@@ -176,18 +182,32 @@ public class GameActivity extends AppCompatActivity {
         mButtonChangeBet.setVisibility(View.INVISIBLE);
 
         mButtonStartBet.setVisibility(View.VISIBLE);
-        mButtonStartBet.setText("Set Betting Amount");
+        if(!mJustStarted) mButtonStartBet.setText("Set Betting Amount");
         mPickerBet.setVisibility(View.VISIBLE);
     }
 
-    private void nextBet(boolean b) {
+    private int nextBet(boolean justLost) {
+        int bet;
+        switch (mStrategyChoice){
+            case 0://Martingale
+                bet = justLost ? Math.min(mBet << 1, mMax) : mStartingBet;
+                break;
+            case 1://Paroli
+            case 2://Fibonaci
+            default:
+                bet = mStartingBet;
+        }
+        if(mCash < bet){
+            return mCash < mMin ? 0 : mCash;
+        }
+        else return bet;
     }
 
-    void calculateOdds(){
+    void calculateOdds(int betting){
         int cash = mCash;
-        int bet = mBet;
+        int bet = betting;
         int rounds = 0;
-        while(cash >= bet && bet <= mMax){
+        while(cash >= bet && bet <= mMax && bet != 0){
             rounds++;
             cash-=bet;
             switch (mStrategyChoice){
