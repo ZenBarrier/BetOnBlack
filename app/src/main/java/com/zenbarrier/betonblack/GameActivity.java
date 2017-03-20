@@ -31,9 +31,9 @@ public class GameActivity extends AppCompatActivity {
     private TextView mTextCash, mTextMin, mTextMax, mTextName, mTextOdds, mTextRounds, mTextStrategyMode, mTextBettingAmount;
     private NumberPicker mPickerBet;
     private int mCash, mMin, mMax, mRounds, mBet, mStrategyChoice, mStartingBet, mStartingCash;
+    private int mFibStreak = 1;
     private double mOdds;
     private String mName, mStrategyMode;
-    private List<Integer> mBetSequence;
     private boolean mJustStarted = true;
     private static final double DOUBLE_ZERO_ODDS = 0.47368421052;//18 black 38 numbers
     private static final double SINGLE_ZERO_ODDS = 0.48648648648;//18 black 37 numbers
@@ -89,8 +89,9 @@ public class GameActivity extends AppCompatActivity {
             cashText.setError("You need at least $"+mStrategy.minBet+" to make a bet.");
         }else{
             mCash = Integer.parseInt(cashString);
-            mStartingCash = mCash;
             initializeInfo();
+            mStartingCash = mCash;
+            mStartingBet = mMin;
             calculateOdds(mMin);
             setInfo();
             mAnimator.showNext();
@@ -128,10 +129,10 @@ public class GameActivity extends AppCompatActivity {
 
         mPickerBet.setMinValue(mMin);
         mBet = mMin;
-        mBetSequence = new ArrayList<>();
         mPickerBet.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             @Override
             public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
+                mStartingBet = newVal;
                 calculateOdds(newVal);
                 setInfo();
             }
@@ -160,6 +161,7 @@ public class GameActivity extends AppCompatActivity {
         mJustStarted = false;
         mCash-=mBet;
         mBet = nextBet(true);
+        mButtonChangeBet.setVisibility(View.INVISIBLE);
         calculateOdds(mBet);
         setInfo();
     }
@@ -174,7 +176,7 @@ public class GameActivity extends AppCompatActivity {
         mButtonChangeBet.setVisibility(View.VISIBLE);
         mTextBettingAmount.setVisibility(View.VISIBLE);
         mTextBettingAmount.setText(String.valueOf(mPickerBet.getValue()));
-        if(mJustStarted) mStartingBet = mPickerBet.getValue();
+        mStartingBet = mPickerBet.getValue();
         mBet = mPickerBet.getValue();
     }
     public void changeBet(View view){
@@ -193,10 +195,19 @@ public class GameActivity extends AppCompatActivity {
         int bet;
         switch (mStrategyChoice){
             case 0://Martingale
-                bet = justLost ? Math.min(mBet << 1, mMax) : mStartingBet;
+                if(justLost){
+                    bet = Math.min(mBet << 1, mMax);
+                }else{
+                    bet = mStartingBet;
+                    mButtonChangeBet.setVisibility(View.VISIBLE);
+                }
                 break;
             case 1://Paroli
             case 2://Fibonaci
+                mFibStreak = justLost ? mFibStreak + 1 : Math.max(1, mFibStreak-2);
+                bet = fibonacci(mStartingBet, mFibStreak);
+                if(mFibStreak == 1) mButtonChangeBet.setVisibility(View.VISIBLE);
+                break;
             default:
                 bet = mStartingBet;
         }
@@ -209,6 +220,7 @@ public class GameActivity extends AppCompatActivity {
     void calculateOdds(int betting){
         int cash = mCash;
         int bet = betting;
+        int fibStreak = mFibStreak;
         int rounds = 0;
         while(cash >= bet && bet <= mMax && bet != 0){
             rounds++;
@@ -219,7 +231,9 @@ public class GameActivity extends AppCompatActivity {
                     break;
                 case 1://Paroli
                 case 2://Fibonaci
-                    fibonacci(mStartingBet, rounds);
+                    fibStreak++;
+                    bet = fibonacci(mStartingBet, fibStreak);
+                    break;
                 default:
             }
         }
