@@ -28,12 +28,12 @@ public class GameActivity extends AppCompatActivity {
     private Strategy mStrategy;
     private ViewAnimator mAnimator;
     private Button mButtonStartBet, mButtonLost, mButtonWon, mButtonChangeBet;
-    private TextView mTextCash, mTextMin, mTextMax, mTextName, mTextOdds, mTextRounds, mTextStrategyMode, mTextBettingAmount;
+    private TextView mTextCash, mTextMin, mTextMax, mTextOdds, mTextRounds, mTextStrategyMode, mTextBettingAmount;
     private NumberPicker mPickerBet;
     private int mCash, mMin, mMax, mRounds, mBet, mStrategyChoice, mStartingBet, mStartingCash;
     private int mFibStreak = 1;
     private double mOdds;
-    private String mName, mStrategyMode;
+    private String mStrategyMode;
     private boolean mJustStarted = true;
     private static final double DOUBLE_ZERO_ODDS = 0.47368421052;//18 black 38 numbers
     private static final double SINGLE_ZERO_ODDS = 0.48648648648;//18 black 37 numbers
@@ -58,6 +58,7 @@ public class GameActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         mStrategy = (Strategy) intent.getSerializableExtra(MainActivity.KEY_STRATEGY);
+        setTitle(mStrategy.name);
 
         mAnimator = (ViewAnimator) findViewById(R.id.viewAnimator_game_view);
     }
@@ -107,7 +108,6 @@ public class GameActivity extends AppCompatActivity {
         mTextCash = (TextView) findViewById(R.id.textView_game_cash);
         mTextMin = (TextView) findViewById(R.id.textView_game_min);
         mTextMax = (TextView) findViewById(R.id.textView_game_max);
-        mTextName = (TextView) findViewById(R.id.textView_game_name);
         mTextOdds = (TextView) findViewById(R.id.textView_game_odds);
         mTextRounds = (TextView) findViewById(R.id.textView_game_rounds);
         mTextStrategyMode = (TextView) findViewById(R.id.textView_game_strategyMode);
@@ -120,9 +120,7 @@ public class GameActivity extends AppCompatActivity {
         String[] modes = getResources().getStringArray(R.array.strategy_array);
         mStrategyMode = modes[mStrategy.strategyChoice];
         mStrategyChoice = mStrategy.strategyChoice;
-        mName = mStrategy.name;
 
-        mTextName.setText(mName);
         mTextMin.setText(String.valueOf(mMin));
         mTextMax.setText(String.valueOf(mMax));
         mTextStrategyMode.setText(mStrategyMode);
