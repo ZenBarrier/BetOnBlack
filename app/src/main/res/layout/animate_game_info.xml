@@ -6,65 +6,192 @@
     android:animateLayoutChanges="true"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <TextView
-        android:id="@+id/textView_game_cash"
-        android:layout_width="wrap_content"
+    <android.support.v7.widget.CardView
+        android:id="@+id/cardView_game_cash"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
+        android:layout_margin="6dp"
+        app:cardCornerRadius="4dp"
+        app:contentPadding="6dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        android:text="TextView"/>
+        app:layout_constraintTop_toTopOf="parent">
 
-    <TextView
-        android:id="@+id/textView_game_min"
-        android:layout_width="wrap_content"
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/textView_game_cashLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:text="Cash" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_toLeftOf="@+id/textView_game_cash"
+                android:layout_alignBottom="@id/textView_game_cashLabel"
+                android:layout_toRightOf="@id/textView_game_cashLabel"
+                android:lines="1"
+                android:text="@string/ellipses" />
+
+            <TextView
+                android:id="@+id/textView_game_cash"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                tools:text="TextView" />
+        </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/cardView_game_rouletteInfo"
+        app:layout_constraintTop_toBottomOf="@id/cardView_game_cash"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="TextView"
+        android:layout_margin="6dp"
+        app:cardCornerRadius="4dp"
+        app:contentPadding="6dp"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toLeftOf="@+id/textView_game_max"
-        app:layout_constraintTop_toTopOf="@+id/textView_game_max"/>
+        app:layout_constraintRight_toRightOf="parent">
 
-    <TextView
-        android:id="@+id/textView_game_max"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="TextView"
-        app:layout_constraintTop_toBottomOf="@+id/textView_game_cash"
-        app:layout_constraintLeft_toRightOf="@+id/textView_game_min"
-        app:layout_constraintRight_toRightOf="parent" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/textView_game_strategyMode"
-        android:layout_width="wrap_content"
+            <TextView
+                android:id="@+id/textView_game_minLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:text="Min" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_toLeftOf="@+id/textView_game_min"
+                android:layout_toRightOf="@id/textView_game_minLabel"
+                android:layout_alignBottom="@id/textView_game_minLabel"
+                android:lines="1"
+                android:text="@string/ellipses" />
+            <TextView
+                android:id="@+id/textView_game_min"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                tools:text="TextView" />
+
+
+            <TextView
+                android:id="@+id/textView_game_maxLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/textView_game_min"
+                android:layout_alignParentLeft="true"
+                android:text="Max" />
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@id/textView_game_maxLabel"
+                android:layout_toLeftOf="@+id/textView_game_max"
+                android:layout_toRightOf="@id/textView_game_maxLabel"
+                android:lines="1"
+                android:text="@string/ellipses" />
+            <TextView
+                android:id="@+id/textView_game_max"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@id/textView_game_maxLabel"
+                android:layout_alignParentRight="true"
+                tools:text="TextView" />
+        </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/cardView_game_strategy"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="TextView"
-        app:layout_constraintTop_toBottomOf="@+id/textView_game_min"
+        android:layout_margin="6dp"
+        app:cardCornerRadius="4dp"
+        app:contentPadding="6dp"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"/>
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cardView_game_rouletteInfo">
 
-    <TextView
-        android:id="@+id/textView_game_odds"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="TextView"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toLeftOf="@+id/textView_game_rounds"
-        app:layout_constraintTop_toTopOf="@+id/textView_game_rounds" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <TextView
+                android:id="@+id/textView_game_strategyMode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TextView"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"/>
 
-    <TextView
-        android:id="@+id/textView_game_rounds"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="TextView"
-        app:layout_constraintTop_toBottomOf="@+id/textView_game_strategyMode"
-        app:layout_constraintLeft_toRightOf="@+id/textView_game_odds"
-        app:layout_constraintRight_toRightOf="parent"/>
+
+            <TextView
+                android:id="@+id/textView_game_oddsLabel"
+                android:layout_width="wrap_content"
+                android:layout_below="@id/textView_game_strategyMode"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:text="Odds" />
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_toLeftOf="@+id/textView_game_odds"
+                android:layout_alignBottom="@id/textView_game_oddsLabel"
+                android:layout_toRightOf="@id/textView_game_oddsLabel"
+                android:lines="1"
+                android:text="@string/ellipses" />
+            <TextView
+                android:id="@+id/textView_game_odds"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@id/textView_game_oddsLabel"
+                android:layout_alignParentRight="true"
+                android:text="TextView"/>
+
+            <TextView
+                android:id="@+id/textView_game_roundsLabel"
+                android:layout_width="wrap_content"
+                android:layout_below="@id/textView_game_oddsLabel"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:text="Rounds" />
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_toLeftOf="@+id/textView_game_rounds"
+                android:layout_alignBottom="@id/textView_game_roundsLabel"
+                android:layout_toRightOf="@id/textView_game_roundsLabel"
+                android:lines="1"
+                android:text="@string/ellipses" />
+            <TextView
+                android:id="@+id/textView_game_rounds"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@id/textView_game_roundsLabel"
+                android:layout_alignParentRight="true"
+                android:text="TextView"/>
+
+        </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
+
+
+
+
 
     <Button
         android:id="@+id/button_game_win"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
         android:onClick="wonBet"
         android:text="Won"
         android:visibility="gone"
@@ -89,7 +216,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView_game_odds" />
+        app:layout_constraintTop_toBottomOf="@+id/cardView_game_strategy" />
 
     <Button
         android:id="@+id/button_game_startingBet"
@@ -108,7 +235,6 @@
         android:id="@+id/button_game_changeBet"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
         android:onClick="changeBet"
         android:text="Change Bet"
         android:visibility="gone"
@@ -126,5 +252,6 @@
         app:layout_constraintRight_toRightOf="parent"
         android:visibility="invisible"
         app:layout_constraintTop_toTopOf="@+id/numberPicker_game_bettingAmount"
-        app:layout_constraintBottom_toBottomOf="@id/numberPicker_game_bettingAmount" />
+        app:layout_constraintBottom_toBottomOf="@+id/numberPicker_game_bettingAmount" />
+
 </android.support.constraint.ConstraintLayout>
