@@ -139,9 +139,9 @@ public class GameActivity extends AppCompatActivity {
 
     private void setInfo() {
         mTextCash.setText(String.valueOf(mCash));
-        mTextOdds.setText(String.valueOf(mOdds));
+        mTextOdds.setText(String.valueOf(Math.round(mOdds * 10000.0)/100.0)+"%");
         mTextRounds.setText(String.valueOf(mRounds));
-        mTextBettingAmount.setText(String.valueOf(mBet));
+        mTextBettingAmount.setText("$"+String.valueOf(mBet));
 
         mPickerBet.setMaxValue(Math.min(mCash, mMax));
         //mPickerBet.setValue(Math.min(mBet, mMax));
@@ -173,7 +173,7 @@ public class GameActivity extends AppCompatActivity {
         mButtonWon.setVisibility(View.VISIBLE);
         mButtonChangeBet.setVisibility(View.VISIBLE);
         mTextBettingAmount.setVisibility(View.VISIBLE);
-        mTextBettingAmount.setText(String.valueOf(mPickerBet.getValue()));
+        mTextBettingAmount.setText("$"+String.valueOf(mPickerBet.getValue()));
         mStartingBet = mPickerBet.getValue();
         mBet = mPickerBet.getValue();
     }

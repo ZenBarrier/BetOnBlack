@@ -245,13 +245,15 @@
     <TextView
         android:id="@+id/textView_game_bettingAmount"
         android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:text="TextView"
+        android:layout_height="wrap_content"
+        android:background="@drawable/circle"
         android:gravity="center"
+        android:textSize="36sp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/numberPicker_game_bettingAmount"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        android:visibility="invisible"
         app:layout_constraintTop_toTopOf="@+id/numberPicker_game_bettingAmount"
-        app:layout_constraintBottom_toBottomOf="@+id/numberPicker_game_bettingAmount" />
+        tools:text="$360" />
 
 </android.support.constraint.ConstraintLayout>
