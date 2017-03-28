@@ -17,8 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewAnimator;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Locale;
 
 public class GameActivity extends AppCompatActivity {
     // Remove the below line after defining your own ad unit ID.
@@ -36,7 +35,7 @@ public class GameActivity extends AppCompatActivity {
     private String mStrategyMode;
     private boolean mJustStarted = true;
     private static final double DOUBLE_ZERO_ODDS = 0.47368421052;//18 black 38 numbers
-    private static final double SINGLE_ZERO_ODDS = 0.48648648648;//18 black 37 numbers
+    //private static final double SINGLE_ZERO_ODDS = 0.48648648648;//18 black 37 numbers
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -139,9 +138,9 @@ public class GameActivity extends AppCompatActivity {
 
     private void setInfo() {
         mTextCash.setText(String.valueOf(mCash));
-        mTextOdds.setText(String.valueOf(Math.round(mOdds * 10000.0)/100.0)+"%");
+        mTextOdds.setText(String.valueOf(String.format(Locale.getDefault(),"%.2f%%", mOdds * 100.0)));
         mTextRounds.setText(String.valueOf(mRounds));
-        mTextBettingAmount.setText("$"+String.valueOf(mBet));
+        mTextBettingAmount.setText(String.format(Locale.getDefault(),"$%d", mBet));
 
         mPickerBet.setMaxValue(Math.min(mCash, mMax));
         //mPickerBet.setValue(Math.min(mBet, mMax));
@@ -173,7 +172,7 @@ public class GameActivity extends AppCompatActivity {
         mButtonWon.setVisibility(View.VISIBLE);
         mButtonChangeBet.setVisibility(View.VISIBLE);
         mTextBettingAmount.setVisibility(View.VISIBLE);
-        mTextBettingAmount.setText("$"+String.valueOf(mPickerBet.getValue()));
+        mTextBettingAmount.setText(String.format(Locale.getDefault(),"$%d", mPickerBet.getValue()));
         mStartingBet = mPickerBet.getValue();
         mBet = mPickerBet.getValue();
     }
@@ -185,7 +184,7 @@ public class GameActivity extends AppCompatActivity {
         mButtonChangeBet.setVisibility(View.INVISIBLE);
 
         mButtonStartBet.setVisibility(View.VISIBLE);
-        if(!mJustStarted) mButtonStartBet.setText("Set Betting Amount");
+        if(!mJustStarted) mButtonStartBet.setText(R.string.game_set_betting_amount);
         mPickerBet.setVisibility(View.VISIBLE);
     }
 

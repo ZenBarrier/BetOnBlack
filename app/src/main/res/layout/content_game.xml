@@ -63,11 +63,10 @@
                 ads:layout_constraintRight_toRightOf="parent"/>
 
             <Button
-                android:id="@+id/button2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:onClick="setCash"
-                android:text="Button"
+                android:text="Set Cash"
                 ads:layout_constraintTop_toBottomOf="@id/editText_game0_cash"
                 ads:layout_constraintLeft_toLeftOf="parent"
                 ads:layout_constraintRight_toRightOf="parent"/>

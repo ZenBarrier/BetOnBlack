@@ -28,4 +28,5 @@
     <string name="mainrecycler_max">Max Bet</string>
     <string name="title_activity_game">GameActivity</string>
     <string name="ellipses">............................................................................................................................................</string>
+    <string name="game_set_betting_amount">Set Betting Amount</string>
 </resources>
