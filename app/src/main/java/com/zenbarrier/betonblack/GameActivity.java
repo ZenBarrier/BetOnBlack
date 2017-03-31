@@ -27,7 +27,7 @@ public class GameActivity extends AppCompatActivity {
     private Strategy mStrategy;
     private ViewAnimator mAnimator;
     private Button mButtonStartBet, mButtonLost, mButtonWon, mButtonChangeBet;
-    private TextView mTextCash, mTextMin, mTextMax, mTextOdds, mTextRounds, mTextStrategyMode, mTextBettingAmount;
+    private TextView mTextCash, mTextProfit, mTextTotalProfit, mTextMin, mTextMax, mTextOdds, mTextRounds, mTextStrategyMode, mTextBettingAmount;
     private NumberPicker mPickerBet;
     private int mCash, mMin, mMax, mRounds, mBet, mStrategyChoice, mStartingBet, mStartingCash;
     private int mFibStreak = 1;
@@ -105,6 +105,8 @@ public class GameActivity extends AppCompatActivity {
         mButtonChangeBet = (Button) findViewById(R.id.button_game_changeBet);
 
         mTextCash = (TextView) findViewById(R.id.textView_game_cash);
+        mTextProfit = (TextView) findViewById(R.id.textView_game_profit);
+        mTextTotalProfit = (TextView) findViewById(R.id.textView_game_totalProfit);
         mTextMin = (TextView) findViewById(R.id.textView_game_min);
         mTextMax = (TextView) findViewById(R.id.textView_game_max);
         mTextOdds = (TextView) findViewById(R.id.textView_game_odds);
@@ -137,10 +139,17 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private void setInfo() {
-        mTextCash.setText(String.valueOf(mCash));
+        mTextCash.setText(String.format(Locale.getDefault(),"$%d", mCash));
+        mTextTotalProfit.setText(String.format(Locale.getDefault(),"$%d", mCash - mStartingCash));
         mTextOdds.setText(String.valueOf(String.format(Locale.getDefault(),"%.2f%%", mOdds * 100.0)));
         mTextRounds.setText(String.valueOf(mRounds));
         mTextBettingAmount.setText(String.format(Locale.getDefault(),"$%d", mBet));
+
+        if((mBet + mCash) > mStartingCash){
+            mTextProfit.setText(String.format(Locale.getDefault(),"$%d", Math.min(mBet+mCash-mStartingCash, mBet)));
+        }else{
+            mTextProfit.setText(String.format(Locale.getDefault(),"$%d", 0));
+        }
 
         mPickerBet.setMaxValue(Math.min(mCash, mMax));
         //mPickerBet.setValue(Math.min(mBet, mMax));
