@@ -1,62 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="?attr/selectableItemBackground"
+    android:background="@android:color/white"
     android:clickable="true"
     android:focusable="true"
+    android:foreground="?attr/selectableItemBackground"
     android:padding="12dp">
 
-    <TextView
-        android:id="@+id/textView_mainRecyclerlist_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textStyle="bold"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="Name" />
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/textView_minLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/mainrecycler_min"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintLeft_toLeftOf="@+id/textView_mainRecyclerlist_name"
-        app:layout_constraintTop_toTopOf="parent"/>
-    <TextView
-        android:id="@+id/textView_mainRecyclerlist_minBet"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:text="min bet"
-        app:layout_constraintLeft_toLeftOf="@id/textView_minLabel"
-        app:layout_constraintTop_toBottomOf="@id/textView_mainRecyclerlist_name" />
+        <TextView
+            android:id="@+id/textView_mainRecyclerlist_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Name" />
 
-    <TextView
-        android:id="@+id/textView_maxLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/mainrecycler_max"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintLeft_toRightOf="@+id/textView_minLabel"
-        app:layout_constraintTop_toTopOf="parent"/>
-    <TextView
-        android:id="@+id/textView_mainRecyclerlist_maxBet"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:text="max bet"
-        app:layout_constraintLeft_toLeftOf="@id/textView_maxLabel"
-        app:layout_constraintTop_toBottomOf="@+id/textView_mainRecyclerlist_name" />
+        <TextView
+            android:id="@+id/textView_maxLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/mainrecycler_max"
+            app:layout_constraintLeft_toRightOf="@+id/textView_minLabel"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/textView_mainRecyclerlist_strategyChoice"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:text="strategy choice"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textView_mainRecyclerlist_name"/>
+        <TextView
+            android:id="@+id/textView_minLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/mainrecycler_min"
+            app:layout_constraintLeft_toLeftOf="@+id/textView_mainRecyclerlist_name"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView_mainRecyclerlist_strategyChoice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView_mainRecyclerlist_name"
+            tools:text="strategy choice" />
+
+        <TextView
+            android:id="@+id/textView_mainRecyclerlist_minBet"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toLeftOf="@+id/textView_minLabel"
+            app:layout_constraintTop_toBottomOf="@+id/textView_mainRecyclerlist_name"
+            tools:text="min bet" />
+
+        <TextView
+            android:id="@+id/textView_mainRecyclerlist_maxBet"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toLeftOf="@+id/textView_maxLabel"
+            app:layout_constraintTop_toBottomOf="@+id/textView_mainRecyclerlist_name"
+            tools:text="max bet" />
+    </android.support.constraint.ConstraintLayout>
 
 
-</android.support.constraint.ConstraintLayout>
+</FrameLayout>
