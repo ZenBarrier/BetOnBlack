@@ -132,6 +132,7 @@ public class GameActivity extends AppCompatActivity {
             @Override
             public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
                 mStartingBet = newVal;
+                mBet = newVal;
                 calculateOdds(newVal);
                 setInfo();
             }
