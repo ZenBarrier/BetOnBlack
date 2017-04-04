@@ -208,7 +208,13 @@ public class GameActivity extends AppCompatActivity {
                     mButtonChangeBet.setVisibility(View.VISIBLE);
                 }
                 break;
-            case 1://Paroli
+            case 1://D'Alembert
+                if(justLost){
+                    bet = Math.min(mBet + 1, mMax);
+                }else{
+                    bet = mBet-1;
+                }
+                break;
             case 2://Fibonaci
                 mFibStreak = justLost ? mFibStreak + 1 : Math.max(1, mFibStreak-2);
                 bet = fibonacci(mStartingBet, mFibStreak);
@@ -235,7 +241,9 @@ public class GameActivity extends AppCompatActivity {
                 case 0://Martingale
                     bet <<= 1;
                     break;
-                case 1://Paroli
+                case 1://D'Alembert
+                    bet++;
+                    break;
                 case 2://Fibonaci
                     fibStreak++;
                     bet = fibonacci(mStartingBet, fibStreak);

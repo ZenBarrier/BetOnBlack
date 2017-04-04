@@ -15,7 +15,7 @@
 
     <string-array name="strategy_array">
         <item>Martingale</item>
-        <item>Paroli</item>
+        <item>D\'Alembert</item>
         <item>Fibonacci</item>
     </string-array>
     <string name="newStrategy_choosestrategy">Choose Strategy</string>
