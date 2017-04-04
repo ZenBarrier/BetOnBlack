@@ -18,7 +18,6 @@
         <item>Paroli</item>
         <item>Fibonacci</item>
     </string-array>
-    <string name="title_activity_main2">Main2Activity</string>
     <string name="newStrategy_choosestrategy">Choose Strategy</string>
     <string name="newstrategy_smallestbetallowed">Smallest bet allowed</string>
     <string name="newstrategy_biggestbetallowed">Biggest bet allowed</string>
@@ -29,4 +28,15 @@
     <string name="title_activity_game">GameActivity</string>
     <string name="ellipses">............................................................................................................................................</string>
     <string name="game_set_betting_amount">Set Betting Amount</string>
+    <string name="game_lost">Lost</string>
+    <string name="game_button_set_starting_bet">Set Starting Bet</string>
+    <string name="game_button_change_bet">Change Bet</string>
+    <string name="game_won">Won</string>
+    <string name="game_rounds">Rounds Before Failure</string>
+    <string name="game_odds_label">Odds of Losing Within %d Rounds</string>
+    <string name="game_min">Smallest Bet Allowed</string>
+    <string name="game_max">Largest Bet Allowed</string>
+    <string name="game_total_cash">Total Cash</string>
+    <string name="game_total_profit">Total Profit Made</string>
+    <string name="game_win_profit">Profit if Win</string>
 </resources>

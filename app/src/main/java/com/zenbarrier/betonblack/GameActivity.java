@@ -27,7 +27,8 @@ public class GameActivity extends AppCompatActivity {
     private Strategy mStrategy;
     private ViewAnimator mAnimator;
     private Button mButtonStartBet, mButtonLost, mButtonWon, mButtonChangeBet;
-    private TextView mTextCash, mTextProfit, mTextTotalProfit, mTextMin, mTextMax, mTextOdds, mTextRounds, mTextStrategyMode, mTextBettingAmount;
+    private TextView mTextCash, mTextWinProfit, mTextTotalProfit, mTextMin, mTextMax;
+    private TextView mTextOdds, mTextRounds, mTextStrategyMode, mTextBettingAmount, mTextOddsLabel;
     private NumberPicker mPickerBet;
     private int mCash, mMin, mMax, mRounds, mBet, mStrategyChoice, mStartingBet, mStartingCash;
     private int mFibStreak = 1;
@@ -105,11 +106,12 @@ public class GameActivity extends AppCompatActivity {
         mButtonChangeBet = (Button) findViewById(R.id.button_game_changeBet);
 
         mTextCash = (TextView) findViewById(R.id.textView_game_cash);
-        mTextProfit = (TextView) findViewById(R.id.textView_game_profit);
+        mTextWinProfit = (TextView) findViewById(R.id.textView_game_profit);
         mTextTotalProfit = (TextView) findViewById(R.id.textView_game_totalProfit);
         mTextMin = (TextView) findViewById(R.id.textView_game_min);
         mTextMax = (TextView) findViewById(R.id.textView_game_max);
         mTextOdds = (TextView) findViewById(R.id.textView_game_odds);
+        mTextOddsLabel = (TextView) findViewById(R.id.textView_game_oddsLabel);
         mTextRounds = (TextView) findViewById(R.id.textView_game_rounds);
         mTextStrategyMode = (TextView) findViewById(R.id.textView_game_strategyMode);
         mTextBettingAmount = (TextView) findViewById(R.id.textView_game_bettingAmount);
@@ -143,17 +145,14 @@ public class GameActivity extends AppCompatActivity {
         mTextCash.setText(String.format(Locale.getDefault(),"$%d", mCash));
         mTextTotalProfit.setText(String.format(Locale.getDefault(),"$%d", mCash - mStartingCash));
         mTextOdds.setText(String.valueOf(String.format(Locale.getDefault(),"%.2f%%", mOdds * 100.0)));
+        mTextOddsLabel.setText(String.format(Locale.getDefault(), getResources().getString(R.string.game_odds_label), mRounds));
         mTextRounds.setText(String.valueOf(mRounds));
         mTextBettingAmount.setText(String.format(Locale.getDefault(),"$%d", mBet));
 
-        if((mBet + mCash) > mStartingCash){
-            mTextProfit.setText(String.format(Locale.getDefault(),"$%d", Math.min(mBet+mCash-mStartingCash, mBet)));
-        }else{
-            mTextProfit.setText(String.format(Locale.getDefault(),"$%d", 0));
-        }
+        mTextWinProfit.setText(String.format(Locale.getDefault(),"$%d", mCash - mStartingCash + mBet));
+
 
         mPickerBet.setMaxValue(Math.min(mCash, mMax));
-        //mPickerBet.setValue(Math.min(mBet, mMax));
     }
 
     public void wonBet(View view){
