@@ -258,7 +258,8 @@ public class GameActivity extends AppCompatActivity {
         if(index == 0){
             super.onBackPressed();
         }else {
-            mAnimator.showPrevious();
+            if(mJustStarted)mAnimator.showPrevious();
+            else super.onBackPressed();
         }
     }
 }
