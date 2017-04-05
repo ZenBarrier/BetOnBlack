@@ -57,7 +57,7 @@ public class GameActivity extends AppCompatActivity {
         Toast.makeText(this, TOAST_TEXT, Toast.LENGTH_LONG).show();
 
         Intent intent = getIntent();
-        mStrategy = (Strategy) intent.getSerializableExtra(MainActivity.KEY_STRATEGY);
+        mStrategy = (Strategy) intent.getSerializableExtra(StrategyListFragment.KEY_STRATEGY);
         setTitle(mStrategy.name);
 
         mAnimator = (ViewAnimator) findViewById(R.id.viewAnimator_game_view);

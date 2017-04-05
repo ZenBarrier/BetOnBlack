@@ -6,8 +6,7 @@
     android:layout_width="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     android:layout_height="match_parent"
-    tools:context="com.zenbarrier.betonblack.MainActivity"
-    tools:showIn="@layout/activity_main">
+    tools:context="com.zenbarrier.betonblack.MainTabbedActivity">
 
     <!-- view for AdMob Banner Ad -->
 

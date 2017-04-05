@@ -135,7 +135,7 @@ public class MainTabbedActivity extends AppCompatActivity {
 
         @Override
         public Fragment getItem(int position) {
-            if(position == 0) return new MainActivity();
+            if(position == 0) return new StrategyListFragment();
             return PlaceholderFragment.newInstance(position + 1);
         }
 

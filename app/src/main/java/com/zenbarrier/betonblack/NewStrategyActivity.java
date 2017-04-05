@@ -34,9 +34,9 @@ public class NewStrategyActivity extends AppCompatActivity {
         mDbHelper = new StrategyDbHelper(this);
 
         Intent intent = getIntent();
-        if(intent.hasExtra(MainActivity.KEY_STRATEGY)){
-            Strategy strategy = (Strategy) intent.getSerializableExtra(MainActivity.KEY_STRATEGY);
-            mPosition = intent.getIntExtra(MainActivity.KEY_POSITION, 0);
+        if(intent.hasExtra(StrategyListFragment.KEY_STRATEGY)){
+            Strategy strategy = (Strategy) intent.getSerializableExtra(StrategyListFragment.KEY_STRATEGY);
+            mPosition = intent.getIntExtra(StrategyListFragment.KEY_POSITION, 0);
             mStrategyName.setText(strategy.name);
             mMinBet.setText(String.valueOf(strategy.minBet));
             mMaxBet.setText(String.valueOf(strategy.maxBet));
@@ -73,8 +73,8 @@ public class NewStrategyActivity extends AppCompatActivity {
             }
             db.close();
             Intent data = new Intent();
-            data.putExtra(MainActivity.KEY_STRATEGY ,strategy);
-            data.putExtra(MainActivity.KEY_POSITION ,mPosition);
+            data.putExtra(StrategyListFragment.KEY_STRATEGY ,strategy);
+            data.putExtra(StrategyListFragment.KEY_POSITION ,mPosition);
             setResult(Activity.RESULT_OK, data);
             finish();
         }

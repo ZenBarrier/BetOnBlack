@@ -59,7 +59,7 @@ class StrategyAdapter extends RecyclerView.Adapter<StrategyAdapter.ViewHolder> {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(mContext, GameActivity.class);
-                intent.putExtra(MainActivity.KEY_STRATEGY, strategy);
+                intent.putExtra(StrategyListFragment.KEY_STRATEGY, strategy);
                 mContext.startActivity(intent);
             }
         });

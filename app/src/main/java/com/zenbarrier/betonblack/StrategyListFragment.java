@@ -29,7 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class MainActivity extends Fragment {
+public class StrategyListFragment extends Fragment {
 
     public static final int REQUEST_NEW_STRATEGY = 1;
     public static final int REQUEST_EDIT_STRATEGY = 2;
@@ -46,7 +46,7 @@ public class MainActivity extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mView = inflater.inflate(R.layout.activity_main, null);
+        mView = inflater.inflate(R.layout.fragment_strategy_list, null);
 
         // Load an ad into the AdMob banner view.
         AdView adView = (AdView) mView.findViewById(R.id.adView);
@@ -117,7 +117,7 @@ public class MainActivity extends Fragment {
                     null,
                     null,
                     sortOrder
-                    );
+            );
 
             while(cursor.moveToNext()){
                 long itemId = cursor.getLong(cursor.getColumnIndex(StrategyContract.StrategyEntry._ID));
