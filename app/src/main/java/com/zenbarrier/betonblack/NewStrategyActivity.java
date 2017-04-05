@@ -59,7 +59,7 @@ public class NewStrategyActivity extends AppCompatActivity {
             values.put(StrategyContract.StrategyEntry.COLUMN_MIN_BET, minBet);
             values.put(StrategyContract.StrategyEntry.COLUMN_MAX_BET, maxBet);
             values.put(StrategyContract.StrategyEntry.COLUMN_STRATEGY_CHOICE, strategyChoice);
-            values.put(StrategyContract.StrategyEntry.COLUMN_STRATEGY_NAME, strategyName);
+            values.put(StrategyContract.StrategyEntry.COLUMN_NAME, strategyName);
 
             Strategy strategy = new Strategy(0, strategyName, minBet, maxBet, strategyChoice);
             if(mIsEditing){

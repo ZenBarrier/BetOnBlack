@@ -17,7 +17,7 @@ class StrategyDbHelper extends SQLiteOpenHelper {
     private static final String SQL_CREATE_ENTRIES =
             "CREATE TABLE IF NOT EXISTS " + StrategyContract.StrategyEntry.TABLE_NAME + " (" +
                     StrategyContract.StrategyEntry._ID + " INTEGER PRIMARY KEY," +
-                    StrategyContract.StrategyEntry.COLUMN_STRATEGY_NAME + " TEXT," +
+                    StrategyContract.StrategyEntry.COLUMN_NAME + " TEXT," +
                     StrategyContract.StrategyEntry.COLUMN_MIN_BET + " INT," +
                     StrategyContract.StrategyEntry.COLUMN_MAX_BET + " INT," +
                     StrategyContract.StrategyEntry.COLUMN_STRATEGY_CHOICE + " INT)";

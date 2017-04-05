@@ -12,7 +12,7 @@ class StrategyContract {
 
     static class StrategyEntry implements BaseColumns{
         static final String TABLE_NAME = "strategies";
-        static final String COLUMN_STRATEGY_NAME = "name";
+        static final String COLUMN_NAME = "name";
         static final String COLUMN_MIN_BET = "minBet";
         static final String COLUMN_MAX_BET = "maxBet";
         static final String COLUMN_STRATEGY_CHOICE = "choice";
