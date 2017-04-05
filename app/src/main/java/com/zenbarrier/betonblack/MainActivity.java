@@ -4,6 +4,7 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 
 import android.app.Activity;
+import android.support.v4.app.Fragment;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -17,24 +18,18 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Toast;
+import android.view.ViewGroup;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class MainActivity extends AppCompatActivity {
-    // Remove the below line after defining your own ad unit ID.
-    private static final String TOAST_TEXT = "Test ads are being shown. "
-            + "To show live ads, replace the ad unit ID in res/values/strings.xml with your own ad unit ID.";
+public class MainActivity extends Fragment {
 
     public static final int REQUEST_NEW_STRATEGY = 1;
     public static final int REQUEST_EDIT_STRATEGY = 2;
@@ -46,39 +41,35 @@ public class MainActivity extends AppCompatActivity {
     RecyclerView.LayoutManager mLayoutManager;
     List<Strategy> mStrategyList;
     StrategyDbHelper mDbHelper;
+    View mView;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        mView = inflater.inflate(R.layout.activity_main, null);
 
         // Load an ad into the AdMob banner view.
-        AdView adView = (AdView) findViewById(R.id.adView);
+        AdView adView = (AdView) mView.findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder()
                 .setRequestAgent("android_studio:ad_template").build();
         adView.loadAd(adRequest);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_main);
-        setSupportActionBar(toolbar);
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        FloatingActionButton fab = (FloatingActionButton) mView.findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent( getApplicationContext(),NewStrategyActivity.class);
+                Intent intent = new Intent( getActivity(),NewStrategyActivity.class);
                 startActivityForResult(intent, REQUEST_NEW_STRATEGY);
             }
         });
 
         initValues();
         initSwipe();
-
-        // Toasts the test ad message on the screen. Remove this after defining your own ad unit ID.
-        Toast.makeText(this, TOAST_TEXT, Toast.LENGTH_LONG).show();
+        return mView;
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         switch(requestCode){
             case REQUEST_NEW_STRATEGY:
@@ -149,31 +140,14 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-
-        return super.onOptionsItemSelected(item);
-
-    }
-
     private void initValues(){
-        mRecyclerView = (RecyclerView) findViewById(R.id.recylerView_main_list);
+        mRecyclerView = (RecyclerView) mView.findViewById(R.id.recylerView_main_list);
         mStrategyList = new ArrayList<>();
-        mLayoutManager = new LinearLayoutManager(this);
+        mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
-        mAdapter = new StrategyAdapter(this, mStrategyList);
+        mAdapter = new StrategyAdapter(getActivity(), mStrategyList);
         mRecyclerView.setAdapter(mAdapter);
-        mDbHelper = new StrategyDbHelper(this);
+        mDbHelper = new StrategyDbHelper(getActivity());
 
         DatabaseLoader databaseLoader = new DatabaseLoader();
         databaseLoader.execute();
@@ -234,7 +208,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void editStrategy(int position) {
-        Intent intent = new Intent( getApplicationContext(),NewStrategyActivity.class);
+        Intent intent = new Intent( getActivity(),NewStrategyActivity.class);
         Strategy strategy = mStrategyList.get(position);
         intent.putExtra(KEY_STRATEGY, strategy);
         intent.putExtra(KEY_POSITION, position);
@@ -245,7 +219,7 @@ public class MainActivity extends AppCompatActivity {
         Strategy strategy = mStrategyList.get(position);
         mAdapter.removeItem(position);
         String snackText = String.format(Locale.getDefault(), "Deleted %s", strategy.name);
-        Snackbar snackbar = Snackbar.make(findViewById(R.id.recylerView_main_list), snackText, Snackbar.LENGTH_INDEFINITE)
+        Snackbar snackbar = Snackbar.make(mView.findViewById(R.id.recylerView_main_list), snackText, Snackbar.LENGTH_INDEFINITE)
                 .setAction("Undo", new UndoListener(position, strategy));
         snackbar.show();
     }

@@ -39,4 +39,6 @@
     <string name="game_total_cash">Total Cash</string>
     <string name="game_total_profit">Total Profit Made</string>
     <string name="game_win_profit">Profit if Win</string>
+    <string name="title_activity_main_tabbed">MainTabbedActivity</string>
+    <string name="section_format">Hello World from section: %1$d</string>
 </resources>
