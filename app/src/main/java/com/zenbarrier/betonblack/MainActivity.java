@@ -29,6 +29,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
     // Remove the below line after defining your own ad unit ID.
@@ -111,12 +112,12 @@ public class MainActivity extends AppCompatActivity {
             SQLiteDatabase db = mDbHelper.getReadableDatabase();
             String[] projection = {
                     StrategyContract.StrategyEntry._ID,
-                    StrategyContract.StrategyEntry.COLUMN_STRATEGY_NAME,
+                    StrategyContract.StrategyEntry.COLUMN_NAME,
                     StrategyContract.StrategyEntry.COLUMN_MIN_BET,
                     StrategyContract.StrategyEntry.COLUMN_MAX_BET,
                     StrategyContract.StrategyEntry.COLUMN_STRATEGY_CHOICE,
             };
-            String sortOrder = StrategyContract.StrategyEntry.COLUMN_STRATEGY_NAME + " ASC";
+            String sortOrder = StrategyContract.StrategyEntry.COLUMN_NAME + " ASC";
             Cursor cursor = db.query(
                     StrategyContract.StrategyEntry.TABLE_NAME,
                     projection,
@@ -129,7 +130,7 @@ public class MainActivity extends AppCompatActivity {
 
             while(cursor.moveToNext()){
                 long itemId = cursor.getLong(cursor.getColumnIndex(StrategyContract.StrategyEntry._ID));
-                String itemName = cursor.getString(cursor.getColumnIndex(StrategyContract.StrategyEntry.COLUMN_STRATEGY_NAME));
+                String itemName = cursor.getString(cursor.getColumnIndex(StrategyContract.StrategyEntry.COLUMN_NAME));
                 int itemMin = cursor.getInt(cursor.getColumnIndex(StrategyContract.StrategyEntry.COLUMN_MIN_BET));
                 int itemMax = cursor.getInt(cursor.getColumnIndex(StrategyContract.StrategyEntry.COLUMN_MAX_BET));
                 int itemChoice = cursor.getInt(cursor.getColumnIndex(StrategyContract.StrategyEntry.COLUMN_STRATEGY_CHOICE));
@@ -241,15 +242,24 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void deleteStrategy(int position) {
-        long id = mStrategyList.get(position)._id;
+        Strategy strategy = mStrategyList.get(position);
         mAdapter.removeItem(position);
-        SQLiteDatabase db = mDbHelper.getReadableDatabase();
-        String selection = StrategyContract.StrategyEntry._ID+"=?";
-        String[] selectArgs = {String.valueOf(id)};
-        db.delete(StrategyContract.StrategyEntry.TABLE_NAME, selection, selectArgs);
-        Snackbar.make(findViewById(R.id.recylerView_main_list), "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show();
-        db.close();
+        String snackText = String.format(Locale.getDefault(), "Deleted %s", strategy.name);
+        Snackbar snackbar = Snackbar.make(findViewById(R.id.recylerView_main_list), snackText, Snackbar.LENGTH_INDEFINITE)
+                .setAction("Undo", new UndoListener(position, strategy));
+        snackbar.show();
+    }
+    private class UndoListener implements View.OnClickListener{
+        private Strategy mStrategy;
+        private int mPosition;
+        UndoListener(int position, Strategy strategy){
+            mPosition = position;
+            mStrategy = strategy;
+        }
+        @Override
+        public void onClick(View v) {
+            mAdapter.addItem(mPosition, mStrategy);
+        }
     }
 
 }
