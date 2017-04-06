@@ -41,6 +41,7 @@ public class MainTabbedActivity extends AppCompatActivity {
     private final int STRATEGY_LIST_POSITION = 0;
     private final int HISTORY_POSITION = 1;
     private AdView mAdView;
+    private FloatingActionButton mFab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,8 +64,8 @@ public class MainTabbedActivity extends AppCompatActivity {
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
 
-        final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        mFab = (FloatingActionButton) findViewById(R.id.fab);
+        mFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
@@ -85,7 +86,7 @@ public class MainTabbedActivity extends AppCompatActivity {
                 set.clone(layout);
                 switch (position){
                     case STRATEGY_LIST_POSITION:
-                        ((StrategyListFragment)mSectionsPagerAdapter.getFragment(STRATEGY_LIST_POSITION)).connectFab(fab);
+                        ((StrategyListFragment)mSectionsPagerAdapter.getFragment(STRATEGY_LIST_POSITION)).connectFab(mFab);
                         set.clear(R.id.fab, ConstraintSet.LEFT);
                         set.connect(R.id.fab, ConstraintSet.RIGHT, R.id.main_content, ConstraintSet.RIGHT);
                         set.applyTo((ConstraintLayout) findViewById(R.id.main_content));
@@ -198,6 +199,7 @@ public class MainTabbedActivity extends AppCompatActivity {
             if(position == STRATEGY_LIST_POSITION){
                 myFragment = StrategyListFragment.newInstance();
                 mPageReferenceMap.put(position, myFragment);
+                ((StrategyListFragment)myFragment).connectFab(mFab);
                 return myFragment;
             }else {
                 return PlaceholderFragment.newInstance(position + 1);
