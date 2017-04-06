@@ -48,20 +48,14 @@ public class StrategyListFragment extends Fragment {
         super.onCreate(savedInstanceState);
         mView = inflater.inflate(R.layout.fragment_strategy_list, null);
 
-        // Load an ad into the AdMob banner view.
-        AdView adView = (AdView) mView.findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder()
-                .setRequestAgent("android_studio:ad_template").build();
-        adView.loadAd(adRequest);
-
-        FloatingActionButton fab = (FloatingActionButton) mView.findViewById(R.id.fab);
+        /*FloatingActionButton fab = (FloatingActionButton) mView.findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent( getActivity(),NewStrategyActivity.class);
                 startActivityForResult(intent, REQUEST_NEW_STRATEGY);
             }
-        });
+        });*/
 
         initValues();
         initSwipe();

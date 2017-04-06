@@ -10,34 +10,13 @@
 
     <!-- view for AdMob Banner Ad -->
 
-    <com.google.android.gms.ads.AdView
-        android:id="@+id/adView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        ads:adSize="BANNER"
-        ads:adUnitId="@string/banner_ad_unit_id"
-        ads:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        ads:layout_constraintLeft_toLeftOf="parent" />
-
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recylerView_main_list"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        ads:layout_constraintBottom_toTopOf="@+id/adView"
-        android:layout_margin="8dp"
+        ads:layout_constraintBottom_toBottomOf="parent"
         ads:layout_constraintRight_toRightOf="parent"
         ads:layout_constraintTop_toTopOf="parent"
         ads:layout_constraintLeft_toLeftOf="parent" />
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:fabSize="auto"
-        android:layout_margin="@dimen/fab_margin"
-        app:layout_constraintBottom_toTopOf="@id/adView"
-        app:layout_constraintRight_toRightOf="parent"
-        android:src="@drawable/ic_add_white"/>
 
 </android.support.constraint.ConstraintLayout>

@@ -1,8 +1,12 @@
 package com.zenbarrier.betonblack;
 
+import android.graphics.Color;
+import android.support.constraint.ConstraintLayout;
+import android.support.constraint.ConstraintSet;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.transition.TransitionManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
@@ -18,6 +22,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import android.widget.TextView;
+
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 
 public class MainTabbedActivity extends AppCompatActivity {
 
@@ -35,6 +42,8 @@ public class MainTabbedActivity extends AppCompatActivity {
      * The {@link ViewPager} that will host the section contents.
      */
     private ViewPager mViewPager;
+    private final int STRATEGY_LIST_POSITION = 0;
+    private final int HISTORY_POSITION = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +63,7 @@ public class MainTabbedActivity extends AppCompatActivity {
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -62,6 +71,44 @@ public class MainTabbedActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+
+        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                ConstraintSet set = new ConstraintSet();
+                ConstraintLayout layout = (ConstraintLayout) findViewById(R.id.main_content);
+                TransitionManager.beginDelayedTransition(layout);
+                set.clone(layout);
+                switch (position){
+                    case STRATEGY_LIST_POSITION:
+                        //set.connect(R.id.fab, ConstraintSet.LEFT, R.id.main_content, ConstraintSet.LEFT);
+                        set.clear(R.id.fab, ConstraintSet.LEFT);
+                        set.connect(R.id.fab, ConstraintSet.RIGHT, R.id.main_content, ConstraintSet.RIGHT);
+                        set.applyTo((ConstraintLayout) findViewById(R.id.main_content));
+                        break;
+                    case HISTORY_POSITION:
+                        set.clear(R.id.fab, ConstraintSet.RIGHT);
+                        set.connect(R.id.fab, ConstraintSet.LEFT, R.id.main_content, ConstraintSet.LEFT);
+                        set.applyTo(layout);
+                        break;
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+
+        // Load an ad into the AdMob banner view.
+        AdView adView = (AdView) findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder()
+                .setRequestAgent("android_studio:ad_template").build();
+        adView.loadAd(adRequest);
 
     }
 
@@ -135,7 +182,7 @@ public class MainTabbedActivity extends AppCompatActivity {
 
         @Override
         public Fragment getItem(int position) {
-            if(position == 0) return new StrategyListFragment();
+            if(position == STRATEGY_LIST_POSITION) return new StrategyListFragment();
             return PlaceholderFragment.newInstance(position + 1);
         }
 
