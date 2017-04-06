@@ -33,6 +33,7 @@ public class GameActivity extends AppCompatActivity {
     private int mCash, mMin, mMax, mRounds, mBet, mStrategyChoice, mStartingBet, mStartingCash;
     private int mFibStreak = 1;
     private double mOdds;
+    private AdView mAdView;
     private String mStrategyMode;
     private boolean mJustStarted = true;
     private static final double DOUBLE_ZERO_ODDS = 0.47368421052;//18 black 38 numbers
@@ -49,10 +50,10 @@ public class GameActivity extends AppCompatActivity {
         }
 
         // Load an ad into the AdMob banner view.
-        AdView adView = (AdView) findViewById(R.id.adView);
+        mAdView = (AdView) findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder()
                 .setRequestAgent("android_studio:ad_template").build();
-        adView.loadAd(adRequest);
+        mAdView.loadAd(adRequest);
         // Toasts the test ad message on the screen. Remove this after defining your own ad unit ID.
         Toast.makeText(this, TOAST_TEXT, Toast.LENGTH_LONG).show();
 
@@ -61,6 +62,18 @@ public class GameActivity extends AppCompatActivity {
         setTitle(mStrategy.name);
 
         mAnimator = (ViewAnimator) findViewById(R.id.viewAnimator_game_view);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mAdView.pause();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mAdView.resume();
     }
 
     @Override
