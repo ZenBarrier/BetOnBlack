@@ -1,12 +1,12 @@
 package com.zenbarrier.betonblack;
 
-import android.graphics.Color;
 import android.support.constraint.ConstraintLayout;
 import android.support.constraint.ConstraintSet;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.transition.TransitionManager;
+import android.support.v4.util.SparseArrayCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
@@ -38,12 +38,9 @@ public class MainTabbedActivity extends AppCompatActivity {
      */
     private SectionsPagerAdapter mSectionsPagerAdapter;
 
-    /**
-     * The {@link ViewPager} that will host the section contents.
-     */
-    private ViewPager mViewPager;
     private final int STRATEGY_LIST_POSITION = 0;
     private final int HISTORY_POSITION = 1;
+    private AdView mAdView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +54,10 @@ public class MainTabbedActivity extends AppCompatActivity {
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
         // Set up the ViewPager with the sections adapter.
-        mViewPager = (ViewPager) findViewById(R.id.container);
+        /*
+      The {@link ViewPager} that will host the section contents.
+     */
+        ViewPager mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
@@ -85,7 +85,7 @@ public class MainTabbedActivity extends AppCompatActivity {
                 set.clone(layout);
                 switch (position){
                     case STRATEGY_LIST_POSITION:
-                        //set.connect(R.id.fab, ConstraintSet.LEFT, R.id.main_content, ConstraintSet.LEFT);
+                        ((StrategyListFragment)mSectionsPagerAdapter.getFragment(STRATEGY_LIST_POSITION)).connectFab(fab);
                         set.clear(R.id.fab, ConstraintSet.LEFT);
                         set.connect(R.id.fab, ConstraintSet.RIGHT, R.id.main_content, ConstraintSet.RIGHT);
                         set.applyTo((ConstraintLayout) findViewById(R.id.main_content));
@@ -105,13 +105,24 @@ public class MainTabbedActivity extends AppCompatActivity {
         });
 
         // Load an ad into the AdMob banner view.
-        AdView adView = (AdView) findViewById(R.id.adView);
+        mAdView = (AdView) findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder()
                 .setRequestAgent("android_studio:ad_template").build();
-        adView.loadAd(adRequest);
+        mAdView.loadAd(adRequest);
 
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mAdView.pause();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mAdView.resume();
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -174,16 +185,33 @@ public class MainTabbedActivity extends AppCompatActivity {
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
      * one of the sections/tabs/pages.
      */
-    public class SectionsPagerAdapter extends FragmentPagerAdapter {
-
-        public SectionsPagerAdapter(FragmentManager fm) {
+    private class SectionsPagerAdapter extends FragmentPagerAdapter {
+        SparseArrayCompat<Fragment> mPageReferenceMap;
+        SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
+            mPageReferenceMap = new SparseArrayCompat<>();
         }
 
         @Override
         public Fragment getItem(int position) {
-            if(position == STRATEGY_LIST_POSITION) return new StrategyListFragment();
-            return PlaceholderFragment.newInstance(position + 1);
+            Fragment myFragment;
+            if(position == STRATEGY_LIST_POSITION){
+                myFragment = StrategyListFragment.newInstance();
+                mPageReferenceMap.put(position, myFragment);
+                return myFragment;
+            }else {
+                return PlaceholderFragment.newInstance(position + 1);
+            }
+        }
+
+        Fragment getFragment(int key){
+            return mPageReferenceMap.get(key);
+        }
+
+        @Override
+        public void destroyItem(ViewGroup container, int position, Object object) {
+            super.destroyItem(container, position, object);
+            mPageReferenceMap.remove(position);
         }
 
         @Override
@@ -194,9 +222,9 @@ public class MainTabbedActivity extends AppCompatActivity {
         @Override
         public CharSequence getPageTitle(int position) {
             switch (position) {
-                case 0:
+                case STRATEGY_LIST_POSITION:
                     return "SECTION 1";
-                case 1:
+                case HISTORY_POSITION:
                     return "SECTION 2";
             }
             return null;

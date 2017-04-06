@@ -1,7 +1,5 @@
 package com.zenbarrier.betonblack;
 
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
 
 import android.app.Activity;
 import android.support.v4.app.Fragment;
@@ -43,19 +41,14 @@ public class StrategyListFragment extends Fragment {
     StrategyDbHelper mDbHelper;
     View mView;
 
+    public static Fragment newInstance(){
+        return new StrategyListFragment();
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mView = inflater.inflate(R.layout.fragment_strategy_list, null);
-
-        /*FloatingActionButton fab = (FloatingActionButton) mView.findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent( getActivity(),NewStrategyActivity.class);
-                startActivityForResult(intent, REQUEST_NEW_STRATEGY);
-            }
-        });*/
+        mView = inflater.inflate(R.layout.fragment_strategy_list, container, false);
 
         initValues();
         initSwipe();
@@ -132,6 +125,16 @@ public class StrategyListFragment extends Fragment {
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
         }
+    }
+
+    public void connectFab(FloatingActionButton fab){
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent( getActivity(),NewStrategyActivity.class);
+                StrategyListFragment.this.startActivityForResult(intent, REQUEST_NEW_STRATEGY);
+            }
+        });
     }
 
     private void initValues(){
