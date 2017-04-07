@@ -2,6 +2,7 @@ package com.zenbarrier.betonblack;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
@@ -38,6 +39,27 @@ class StrategyDbHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL(SQL_DELETE_ENTRIES);
         onCreate(db);
+    }
+
+    Cursor getAll(){
+        SQLiteDatabase db = this.getReadableDatabase();
+        String[] projection = {
+                StrategyContract.StrategyEntry._ID,
+                StrategyContract.StrategyEntry.COLUMN_NAME,
+                StrategyContract.StrategyEntry.COLUMN_MIN_BET,
+                StrategyContract.StrategyEntry.COLUMN_MAX_BET,
+                StrategyContract.StrategyEntry.COLUMN_STRATEGY_CHOICE,
+        };
+        String sortOrder = StrategyContract.StrategyEntry.COLUMN_NAME + " ASC";
+        return db.query(
+                StrategyContract.StrategyEntry.TABLE_NAME,
+                projection,
+                null,
+                null,
+                null,
+                null,
+                sortOrder
+        );
     }
 
     long add(Strategy strategy){

@@ -5,7 +5,6 @@ import android.app.Activity;
 import android.support.v4.app.Fragment;
 import android.content.Intent;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -87,24 +86,7 @@ public class StrategyListFragment extends Fragment {
 
         @Override
         protected Void doInBackground(Void... params) {
-            SQLiteDatabase db = mDbHelper.getReadableDatabase();
-            String[] projection = {
-                    StrategyContract.StrategyEntry._ID,
-                    StrategyContract.StrategyEntry.COLUMN_NAME,
-                    StrategyContract.StrategyEntry.COLUMN_MIN_BET,
-                    StrategyContract.StrategyEntry.COLUMN_MAX_BET,
-                    StrategyContract.StrategyEntry.COLUMN_STRATEGY_CHOICE,
-            };
-            String sortOrder = StrategyContract.StrategyEntry.COLUMN_NAME + " ASC";
-            Cursor cursor = db.query(
-                    StrategyContract.StrategyEntry.TABLE_NAME,
-                    projection,
-                    null,
-                    null,
-                    null,
-                    null,
-                    sortOrder
-            );
+            Cursor cursor = mDbHelper.getAll();
 
             while(cursor.moveToNext()){
                 long itemId = cursor.getLong(cursor.getColumnIndex(StrategyContract.StrategyEntry._ID));
@@ -116,7 +98,6 @@ public class StrategyListFragment extends Fragment {
                 mStrategyList.add(strategy);
             }
             cursor.close();
-            db.close();
 
             return null;
         }
@@ -124,6 +105,7 @@ public class StrategyListFragment extends Fragment {
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
+            mDbHelper.close();
         }
     }
 
