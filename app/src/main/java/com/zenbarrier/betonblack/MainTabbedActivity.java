@@ -1,11 +1,7 @@
 package com.zenbarrier.betonblack;
 
-import android.support.constraint.ConstraintLayout;
-import android.support.constraint.ConstraintSet;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.transition.TransitionManager;
 import android.support.v4.util.SparseArrayCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -15,13 +11,10 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
-import android.view.LayoutInflater;
+import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.ViewGroup;
-
-import android.widget.TextView;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -65,43 +58,34 @@ public class MainTabbedActivity extends AppCompatActivity {
         tabLayout.setupWithViewPager(mViewPager);
 
         mFab = (FloatingActionButton) findViewById(R.id.fab);
-        mFab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
 
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                if(positionOffset>0.0) {
+                    DisplayMetrics displayMetrics = new DisplayMetrics();
+                    getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+                    int width = displayMetrics.widthPixels - mFab.getWidth();
+                    int margin = ((ViewGroup.MarginLayoutParams)mFab.getLayoutParams()).rightMargin*2;
+                    mFab.setTranslationX(-positionOffset*(width-margin)/2);
+                    mFab.setRotation(-360*positionOffset);
+                }
             }
 
             @Override
             public void onPageSelected(int position) {
-                ConstraintSet set = new ConstraintSet();
-                ConstraintLayout layout = (ConstraintLayout) findViewById(R.id.main_content);
-                TransitionManager.beginDelayedTransition(layout);
-                set.clone(layout);
                 switch (position){
                     case STRATEGY_LIST_POSITION:
                         ((StrategyListFragment)mSectionsPagerAdapter.getFragment(STRATEGY_LIST_POSITION)).connectFab(mFab);
-                        set.clear(R.id.fab, ConstraintSet.LEFT);
-                        set.connect(R.id.fab, ConstraintSet.RIGHT, R.id.main_content, ConstraintSet.RIGHT);
-                        set.applyTo((ConstraintLayout) findViewById(R.id.main_content));
                         break;
                     case HISTORY_POSITION:
-                        set.clear(R.id.fab, ConstraintSet.RIGHT);
-                        set.connect(R.id.fab, ConstraintSet.LEFT, R.id.main_content, ConstraintSet.LEFT);
-                        set.applyTo(layout);
+                        ((HistoryFragment)mSectionsPagerAdapter.getFragment(HISTORY_POSITION)).connectFab(mFab);
                         break;
                 }
             }
 
             @Override
             public void onPageScrollStateChanged(int state) {
-
             }
         });
 
@@ -147,40 +131,6 @@ public class MainTabbedActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    /**
-     * A placeholder fragment containing a simple view.
-     */
-    public static class PlaceholderFragment extends Fragment {
-        /**
-         * The fragment argument representing the section number for this
-         * fragment.
-         */
-        private static final String ARG_SECTION_NUMBER = "section_number";
-
-        public PlaceholderFragment() {
-        }
-
-        /**
-         * Returns a new instance of this fragment for the given section
-         * number.
-         */
-        public static PlaceholderFragment newInstance(int sectionNumber) {
-            PlaceholderFragment fragment = new PlaceholderFragment();
-            Bundle args = new Bundle();
-            args.putInt(ARG_SECTION_NUMBER, sectionNumber);
-            fragment.setArguments(args);
-            return fragment;
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_main_tabbed, container, false);
-            TextView textView = (TextView) rootView.findViewById(R.id.section_label);
-            textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
-            return rootView;
-        }
-    }
 
     /**
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
@@ -201,13 +151,17 @@ public class MainTabbedActivity extends AppCompatActivity {
                 mPageReferenceMap.put(position, myFragment);
                 ((StrategyListFragment)myFragment).connectFab(mFab);
                 return myFragment;
-            }else {
-                return PlaceholderFragment.newInstance(position + 1);
+            }else{
+                myFragment = HistoryFragment.newInstance();
+                mPageReferenceMap.put(position, myFragment);
+                return myFragment;
             }
         }
 
         Fragment getFragment(int key){
-            return mPageReferenceMap.get(key);
+            if(mPageReferenceMap.get(key) == null){
+                return getItem(key);
+            }else return mPageReferenceMap.get(key);
         }
 
         @Override
