@@ -37,7 +37,6 @@ public class StrategyListFragment extends Fragment {
     StrategyAdapter mAdapter;
     RecyclerView.LayoutManager mLayoutManager;
     List<Strategy> mStrategyList;
-    StrategyDbHelper mDbHelper;
     View mView;
 
     public static Fragment newInstance(){
@@ -78,10 +77,12 @@ public class StrategyListFragment extends Fragment {
     }
 
     private class DatabaseLoader extends AsyncTask<Void, Void, Void>{
+        private StrategyDbHelper mDbHelper;
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            mDbHelper = new StrategyDbHelper(getActivity());
         }
 
         @Override
@@ -126,7 +127,6 @@ public class StrategyListFragment extends Fragment {
         mRecyclerView.setLayoutManager(mLayoutManager);
         mAdapter = new StrategyAdapter(getActivity(), mStrategyList);
         mRecyclerView.setAdapter(mAdapter);
-        mDbHelper = new StrategyDbHelper(getActivity());
 
         DatabaseLoader databaseLoader = new DatabaseLoader();
         databaseLoader.execute();

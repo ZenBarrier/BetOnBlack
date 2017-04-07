@@ -10,6 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.NumberPicker;
@@ -74,6 +75,14 @@ public class GameActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         mAdView.resume();
+    }
+
+    @Override
+    protected void onDestroy() {
+        mAdView.setAdListener(null);
+        ((ViewGroup)mAdView.getParent()).removeView(mAdView);
+        mAdView.destroy();
+        super.onDestroy();
     }
 
     @Override
