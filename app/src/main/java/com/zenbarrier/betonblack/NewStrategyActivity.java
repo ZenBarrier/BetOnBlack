@@ -48,30 +48,20 @@ public class NewStrategyActivity extends AppCompatActivity {
 
 
     public void saveStrategy(View view) {
-        SQLiteDatabase db = mDbHelper.getWritableDatabase();
         try {
             String strategyName = mStrategyName.getText().toString();
             int minBet = Integer.parseInt(mMinBet.getText().toString());
             int maxBet = Integer.parseInt(mMaxBet.getText().toString());
             int strategyChoice = mStrategyChoice.getSelectedItemPosition();
 
-            ContentValues values = new ContentValues();
-            values.put(StrategyContract.StrategyEntry.COLUMN_MIN_BET, minBet);
-            values.put(StrategyContract.StrategyEntry.COLUMN_MAX_BET, maxBet);
-            values.put(StrategyContract.StrategyEntry.COLUMN_STRATEGY_CHOICE, strategyChoice);
-            values.put(StrategyContract.StrategyEntry.COLUMN_NAME, strategyName);
-
             Strategy strategy = new Strategy(0, strategyName, minBet, maxBet, strategyChoice);
             if(mIsEditing){
-                String selection = StrategyContract.StrategyEntry._ID+"=?";
-                String[] selectionArgs = {String.valueOf(mEditId)};
-                db.update(StrategyContract.StrategyEntry.TABLE_NAME, values, selection, selectionArgs);
                 strategy._id = mEditId;
+                mDbHelper.update(strategy);
             }
             else {
-                strategy._id = db.insert(StrategyContract.StrategyEntry.TABLE_NAME, null, values);
+                strategy._id = mDbHelper.add(strategy);
             }
-            db.close();
             Intent data = new Intent();
             data.putExtra(StrategyListFragment.KEY_STRATEGY ,strategy);
             data.putExtra(StrategyListFragment.KEY_POSITION ,mPosition);

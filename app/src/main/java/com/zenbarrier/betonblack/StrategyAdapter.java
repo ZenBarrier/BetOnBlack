@@ -1,10 +1,8 @@
 package com.zenbarrier.betonblack;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
-import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -76,11 +74,7 @@ class StrategyAdapter extends RecyclerView.Adapter<StrategyAdapter.ViewHolder> {
         notifyItemRangeChanged(position, getItemCount());
 
         StrategyDbHelper dbHelper = new StrategyDbHelper(mContext);
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
-        String selection = StrategyContract.StrategyEntry._ID+"=?";
-        String[] selectArgs = {String.valueOf(id)};
-        db.delete(StrategyContract.StrategyEntry.TABLE_NAME, selection, selectArgs);
-        db.close();
+        dbHelper.delete(id);
     }
 
 
@@ -90,16 +84,7 @@ class StrategyAdapter extends RecyclerView.Adapter<StrategyAdapter.ViewHolder> {
         notifyItemRangeChanged(position, getItemCount());
 
         StrategyDbHelper dbHelper = new StrategyDbHelper(mContext);
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-
-        ContentValues values = new ContentValues();
-        values.put(StrategyContract.StrategyEntry._ID, strategy._id);
-        values.put(StrategyContract.StrategyEntry.COLUMN_MIN_BET, strategy.minBet);
-        values.put(StrategyContract.StrategyEntry.COLUMN_MAX_BET, strategy.maxBet);
-        values.put(StrategyContract.StrategyEntry.COLUMN_STRATEGY_CHOICE, strategy.strategyChoice);
-        values.put(StrategyContract.StrategyEntry.COLUMN_NAME, strategy.name);
-        db.insert(StrategyContract.StrategyEntry.TABLE_NAME, null, values);
-        db.close();
+        dbHelper.add(strategy);
     }
 
 }
