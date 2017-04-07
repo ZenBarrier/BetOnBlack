@@ -66,8 +66,8 @@ public class MainTabbedActivity extends AppCompatActivity {
                     DisplayMetrics displayMetrics = new DisplayMetrics();
                     getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
                     int width = displayMetrics.widthPixels - mFab.getWidth();
-                    int margin = ((ViewGroup.MarginLayoutParams)mFab.getLayoutParams()).rightMargin*2;
-                    mFab.setTranslationX(-positionOffset*(width-margin)/2);
+                    int margin = ((ViewGroup.MarginLayoutParams)mFab.getLayoutParams()).rightMargin<<1;
+                    mFab.setTranslationX(-positionOffset*(width-margin)*0.5f);
                     mFab.setRotation(-360*positionOffset);
                 }
             }
