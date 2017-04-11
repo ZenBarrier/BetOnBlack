@@ -16,15 +16,27 @@ class StrategyDbHelper extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 1;
     private static final String DATABASE_NAME = "Strategy.db";
 
-    private static final String SQL_CREATE_ENTRIES =
+    private static final String SQL_CREATE_STRATEGY_ENTRIES =
             "CREATE TABLE IF NOT EXISTS " + StrategyContract.StrategyEntry.TABLE_NAME + " (" +
                     StrategyContract.StrategyEntry._ID + " INTEGER PRIMARY KEY," +
                     StrategyContract.StrategyEntry.COLUMN_NAME + " TEXT," +
                     StrategyContract.StrategyEntry.COLUMN_MIN_BET + " INT," +
                     StrategyContract.StrategyEntry.COLUMN_MAX_BET + " INT," +
                     StrategyContract.StrategyEntry.COLUMN_STRATEGY_CHOICE + " INT)";
-    private static final String SQL_DELETE_ENTRIES =
+
+    private static final String SQL_CREATE_HISTORY_ENTRIES =
+            "CREATE TABLE IF NOT EXISTS " + StrategyContract.HistoryEntry.TABLE_NAME + " (" +
+                    StrategyContract.HistoryEntry._ID + " INTEGER PRIMARY KEY," +
+                    StrategyContract.HistoryEntry.COLUMN_NAME + " TEXT," +
+                    StrategyContract.HistoryEntry.COLUMN_DATE + " DATETIME DEFAULT CURRENT_TIMESTAMP," +
+                    StrategyContract.HistoryEntry.COLUMN_START_CASH + " INT," +
+                    StrategyContract.HistoryEntry.COLUMN_END_CASH + " INT," +
+                    StrategyContract.HistoryEntry.COLUMN_MANUAL + " INT DEFAULT 0)";
+
+    private static final String SQL_DELETE_STRATEGY_ENTRIES =
             "DROP TABLE IF EXISTS " + StrategyContract.StrategyEntry.TABLE_NAME;
+    private static final String SQL_DELETE_HISTORY_ENTRIES =
+            "DROP TABLE IF EXISTS " + StrategyContract.HistoryEntry.TABLE_NAME;
 
     StrategyDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -32,16 +44,18 @@ class StrategyDbHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL(SQL_CREATE_ENTRIES);
+        db.execSQL(SQL_CREATE_STRATEGY_ENTRIES);
+        db.execSQL(SQL_CREATE_HISTORY_ENTRIES);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL(SQL_DELETE_ENTRIES);
+        db.execSQL(SQL_DELETE_STRATEGY_ENTRIES);
+        db.execSQL(SQL_DELETE_HISTORY_ENTRIES);
         onCreate(db);
     }
 
-    Cursor getAll(){
+    Cursor getAllStrategies(){
         SQLiteDatabase db = this.getReadableDatabase();
         String[] projection = {
                 StrategyContract.StrategyEntry._ID,
@@ -91,7 +105,7 @@ class StrategyDbHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-    void delete(long id){
+    void deleteStrategy(long id){
         SQLiteDatabase db = this.getWritableDatabase();
         String selection = StrategyContract.StrategyEntry._ID+"=?";
         String[] selectArgs = {String.valueOf(id)};

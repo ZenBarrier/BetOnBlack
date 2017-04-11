@@ -87,7 +87,7 @@ public class StrategyListFragment extends Fragment {
 
         @Override
         protected Void doInBackground(Void... params) {
-            Cursor cursor = mDbHelper.getAll();
+            Cursor cursor = mDbHelper.getAllStrategies();
 
             while(cursor.moveToNext()){
                 long itemId = cursor.getLong(cursor.getColumnIndex(StrategyContract.StrategyEntry._ID));

@@ -74,7 +74,7 @@ class StrategyAdapter extends RecyclerView.Adapter<StrategyAdapter.ViewHolder> {
         notifyItemRangeChanged(position, getItemCount());
 
         StrategyDbHelper dbHelper = new StrategyDbHelper(mContext);
-        dbHelper.delete(id);
+        dbHelper.deleteStrategy(id);
     }
 
 

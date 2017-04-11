@@ -18,4 +18,13 @@ class StrategyContract {
         static final String COLUMN_STRATEGY_CHOICE = "choice";
 
     }
+
+    static class HistoryEntry implements BaseColumns{
+        static final String TABLE_NAME = "history";
+        static final String COLUMN_NAME = "name";
+        static final String COLUMN_DATE = "date";
+        static final String COLUMN_MANUAL = "manual";
+        static final String COLUMN_START_CASH = "startCash";
+        static final String COLUMN_END_CASH = "endCash";
+    }
 }
