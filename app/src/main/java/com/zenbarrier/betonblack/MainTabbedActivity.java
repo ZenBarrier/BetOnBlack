@@ -34,6 +34,7 @@ public class MainTabbedActivity extends AppCompatActivity {
     private final int STRATEGY_LIST_POSITION = 0;
     private final int HISTORY_POSITION = 1;
     private AdView mAdView;
+    private int mCurrentPage = 0;
     private FloatingActionButton mFab;
 
     @Override
@@ -74,14 +75,8 @@ public class MainTabbedActivity extends AppCompatActivity {
 
             @Override
             public void onPageSelected(int position) {
-                switch (position){
-                    case STRATEGY_LIST_POSITION:
-                        ((StrategyListFragment)mSectionsPagerAdapter.getFragment(STRATEGY_LIST_POSITION)).connectFab(mFab);
-                        break;
-                    case HISTORY_POSITION:
-                        ((HistoryFragment)mSectionsPagerAdapter.getFragment(HISTORY_POSITION)).connectFab(mFab);
-                        break;
-                }
+                mCurrentPage = position;
+                mSectionsPagerAdapter.setFabListener(position);
             }
 
             @Override
@@ -157,7 +152,6 @@ public class MainTabbedActivity extends AppCompatActivity {
             if(position == STRATEGY_LIST_POSITION){
                 myFragment = StrategyListFragment.newInstance();
                 mPageReferenceMap.put(position, myFragment);
-                ((StrategyListFragment)myFragment).connectFab(mFab);
                 return myFragment;
             }else{
                 myFragment = HistoryFragment.newInstance();
@@ -166,10 +160,28 @@ public class MainTabbedActivity extends AppCompatActivity {
             }
         }
 
-        Fragment getFragment(int key){
+        void setFabListener(int position){
+            Fragment myFragment = mPageReferenceMap.get(position);
+            if(myFragment == null) return;
+            if(position == STRATEGY_LIST_POSITION){
+                ((StrategyListFragment)myFragment).connectFab(mFab);
+            }if(position == HISTORY_POSITION){
+                ((HistoryFragment)myFragment).connectFab(mFab);
+            }
+        }
+
+        /*Fragment getFragment(int key){
             if(mPageReferenceMap.get(key) == null){
                 return getItem(key);
             }else return mPageReferenceMap.get(key);
+        }*/
+
+        @Override
+        public Object instantiateItem(ViewGroup container, int position) {
+            Fragment fragment = (Fragment) super.instantiateItem(container, position);
+            mPageReferenceMap.put(position, fragment);
+            if(position == mCurrentPage)setFabListener(position);
+            return fragment;
         }
 
         @Override
