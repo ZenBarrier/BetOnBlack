@@ -199,9 +199,9 @@ public class MainTabbedActivity extends AppCompatActivity {
         public CharSequence getPageTitle(int position) {
             switch (position) {
                 case STRATEGY_LIST_POSITION:
-                    return "SECTION 1";
+                    return "Strategies";
                 case HISTORY_POSITION:
-                    return "SECTION 2";
+                    return "History";
             }
             return null;
         }
