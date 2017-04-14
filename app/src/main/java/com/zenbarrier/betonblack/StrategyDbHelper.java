@@ -98,33 +98,30 @@ class StrategyDbHelper extends SQLiteOpenHelper {
         );
     }
 
-    long add(String name, int startCash, int endCash){
-        return add(name, startCash, endCash, false);
-    }
-    
-    long add(String name, int startCash, int endCash, boolean manual){
+    long add(History history){
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put(StrategyContract.HistoryEntry.COLUMN_NAME, name);
-        values.put(StrategyContract.HistoryEntry.COLUMN_START_CASH, startCash);
-        values.put(StrategyContract.HistoryEntry.COLUMN_END_CASH, endCash);
-        values.put(StrategyContract.HistoryEntry.COLUMN_MANUAL, manual);
+        if(history._id > 0) {values.put(StrategyContract.HistoryEntry._ID, history._id);}
+        values.put(StrategyContract.HistoryEntry.COLUMN_NAME, history.name);
+        values.put(StrategyContract.HistoryEntry.COLUMN_START_CASH, history.startCash);
+        values.put(StrategyContract.HistoryEntry.COLUMN_END_CASH, history.endCash);
+        values.put(StrategyContract.HistoryEntry.COLUMN_MANUAL, history.isManual);
         long id = db.insert(StrategyContract.HistoryEntry.TABLE_NAME, null, values);
         db.close();
 
         return id;
     }
 
-    void update(long id, String name, int startCash, int endCash){
+    void update(History history){
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put(StrategyContract.HistoryEntry.COLUMN_NAME, name);
-        values.put(StrategyContract.HistoryEntry.COLUMN_START_CASH, startCash);
-        values.put(StrategyContract.HistoryEntry.COLUMN_END_CASH, endCash);
+        values.put(StrategyContract.HistoryEntry.COLUMN_NAME, history.name);
+        values.put(StrategyContract.HistoryEntry.COLUMN_START_CASH, history.startCash);
+        values.put(StrategyContract.HistoryEntry.COLUMN_END_CASH, history.endCash);
         String selection = StrategyContract.HistoryEntry._ID+"=?";
-        String[] selectionArgs = {String.valueOf(id)};
+        String[] selectionArgs = {String.valueOf(history._id)};
         db.update(StrategyContract.HistoryEntry.TABLE_NAME, values, selection, selectionArgs);
         db.close();
     }
