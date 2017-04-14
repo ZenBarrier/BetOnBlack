@@ -76,6 +76,59 @@ class StrategyDbHelper extends SQLiteOpenHelper {
         );
     }
 
+    Cursor getAllHistory(){
+        SQLiteDatabase db = this.getReadableDatabase();
+        String[] projection = {
+                StrategyContract.HistoryEntry._ID,
+                StrategyContract.HistoryEntry.COLUMN_NAME,
+                StrategyContract.HistoryEntry.COLUMN_START_CASH,
+                StrategyContract.HistoryEntry.COLUMN_END_CASH,
+                StrategyContract.HistoryEntry.COLUMN_DATE,
+                StrategyContract.HistoryEntry.COLUMN_MANUAL,
+        };
+        String sortOrder = StrategyContract.HistoryEntry.COLUMN_DATE + " ASC";
+        return db.query(
+                StrategyContract.HistoryEntry.TABLE_NAME,
+                projection,
+                null,
+                null,
+                null,
+                null,
+                sortOrder
+        );
+    }
+
+    long add(String name, int startCash, int endCash){
+        return add(name, startCash, endCash, false);
+    }
+    
+    long add(String name, int startCash, int endCash, boolean manual){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(StrategyContract.HistoryEntry.COLUMN_NAME, name);
+        values.put(StrategyContract.HistoryEntry.COLUMN_START_CASH, startCash);
+        values.put(StrategyContract.HistoryEntry.COLUMN_END_CASH, endCash);
+        values.put(StrategyContract.HistoryEntry.COLUMN_MANUAL, manual);
+        long id = db.insert(StrategyContract.HistoryEntry.TABLE_NAME, null, values);
+        db.close();
+
+        return id;
+    }
+
+    void update(long id, String name, int startCash, int endCash){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(StrategyContract.HistoryEntry.COLUMN_NAME, name);
+        values.put(StrategyContract.HistoryEntry.COLUMN_START_CASH, startCash);
+        values.put(StrategyContract.HistoryEntry.COLUMN_END_CASH, endCash);
+        String selection = StrategyContract.HistoryEntry._ID+"=?";
+        String[] selectionArgs = {String.valueOf(id)};
+        db.update(StrategyContract.HistoryEntry.TABLE_NAME, values, selection, selectionArgs);
+        db.close();
+    }
+
     long add(Strategy strategy){
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -110,6 +163,14 @@ class StrategyDbHelper extends SQLiteOpenHelper {
         String selection = StrategyContract.StrategyEntry._ID+"=?";
         String[] selectArgs = {String.valueOf(id)};
         db.delete(StrategyContract.StrategyEntry.TABLE_NAME, selection, selectArgs);
+        db.close();
+    }
+
+    void deleteHistory(long id){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String selection = StrategyContract.HistoryEntry._ID+"=?";
+        String[] selectArgs = {String.valueOf(id)};
+        db.delete(StrategyContract.HistoryEntry.TABLE_NAME, selection, selectArgs);
         db.close();
     }
 }
