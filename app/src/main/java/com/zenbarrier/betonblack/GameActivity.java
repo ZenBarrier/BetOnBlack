@@ -291,4 +291,10 @@ public class GameActivity extends AppCompatActivity {
             else super.onBackPressed();
         }
     }
+
+    public void saveData(MenuItem item) {
+        History history = new History(0, mStrategy.name, mStartingCash, mCash, false, null);
+        StrategyDbHelper dbHelper = new StrategyDbHelper(this);
+        dbHelper.add(history);
+    }
 }

@@ -46,15 +46,16 @@ class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHolder>{
         final History history = mHistoryList.get(position);
         int profit = history.endCash - history.startCash;
         ((TextView)holder.view.findViewById(R.id.textView_history_name)).setText(history.name);
-        ((TextView)holder.view.findViewById(R.id.textView_history_startCash)).setText(history.startCash);
-        ((TextView)holder.view.findViewById(R.id.textView_history_endCash)).setText(history.endCash);
+        ((TextView)holder.view.findViewById(R.id.textView_history_startCash)).setText(String.valueOf(history.startCash));
+        ((TextView)holder.view.findViewById(R.id.textView_history_endCash)).setText(String.valueOf(history.endCash));
+        ((TextView)holder.view.findViewById(R.id.textView_history_date)).setText(String.valueOf(history.date));
 
         TextView textViewProfit = ((TextView)holder.view.findViewById(R.id.textView_history_profit));
-        if(profit<0){
-            textViewProfit.setText(profit);
+        if(profit >= 0){
+            textViewProfit.setText(String.valueOf(profit));
             textViewProfit.setTextColor(ContextCompat.getColor(mContext, R.color.colorProfit));
         }else{
-            textViewProfit.setText(Math.abs(profit));
+            textViewProfit.setText(String.valueOf(Math.abs(profit)));
             textViewProfit.setTextColor(ContextCompat.getColor(mContext, R.color.colorLoss));
             ((TextView)holder.view.findViewById(R.id.textView_history_profitLabel)).setText(R.string.loss_label);
         }

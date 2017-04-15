@@ -49,4 +49,5 @@
     <string name="end_cash_label">End Cash</string>
     <string name="profit_label">Profit</string>
     <string name="loss_label">Loss</string>
+    <string name="save">Save</string>
 </resources>

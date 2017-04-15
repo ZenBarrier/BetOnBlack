@@ -103,6 +103,7 @@ class StrategyDbHelper extends SQLiteOpenHelper {
 
         ContentValues values = new ContentValues();
         if(history._id > 0) {values.put(StrategyContract.HistoryEntry._ID, history._id);}
+        if(history.date != null) {values.put(StrategyContract.HistoryEntry.COLUMN_DATE, history.date);}
         values.put(StrategyContract.HistoryEntry.COLUMN_NAME, history.name);
         values.put(StrategyContract.HistoryEntry.COLUMN_START_CASH, history.startCash);
         values.put(StrategyContract.HistoryEntry.COLUMN_END_CASH, history.endCash);
