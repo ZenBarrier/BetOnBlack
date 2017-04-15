@@ -42,11 +42,14 @@ public class HistoryFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         mView = inflater.inflate(R.layout.fragment_history, container, false);
+
+        initValues();
+
         return mView;
     }
 
     private void initValues(){
-        mRecyclerView = (RecyclerView) mView.findViewById(R.id.recylerView_main_list);
+        mRecyclerView = (RecyclerView) mView.findViewById(R.id.recylerView_history_list);
         mHistoryList = new ArrayList<>();
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
