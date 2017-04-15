@@ -3,4 +3,7 @@
     <color name="colorPrimary">#299f20</color>
     <color name="colorPrimaryDark">#147b02</color>
     <color name="colorAccent">#ff9100</color>
+
+    <color name="colorProfit">#10b903</color>
+    <color name="colorLoss">#ff1010</color>
 </resources>

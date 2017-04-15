@@ -1,10 +1,13 @@
 package com.zenbarrier.betonblack;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import java.util.List;
 
@@ -40,11 +43,50 @@ class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHolder>{
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
+        final History history = mHistoryList.get(position);
+        int profit = history.endCash - history.startCash;
+        ((TextView)holder.view.findViewById(R.id.textView_history_name)).setText(history.name);
+        ((TextView)holder.view.findViewById(R.id.textView_history_startCash)).setText(history.startCash);
+        ((TextView)holder.view.findViewById(R.id.textView_history_endCash)).setText(history.endCash);
 
+        TextView textViewProfit = ((TextView)holder.view.findViewById(R.id.textView_history_profit));
+        if(profit<0){
+            textViewProfit.setText(profit);
+            textViewProfit.setTextColor(ContextCompat.getColor(mContext, R.color.colorProfit));
+        }else{
+            textViewProfit.setText(Math.abs(profit));
+            textViewProfit.setTextColor(ContextCompat.getColor(mContext, R.color.colorLoss));
+            ((TextView)holder.view.findViewById(R.id.textView_history_profitLabel)).setText(R.string.loss_label);
+        }
+        ImageView imageViewManual = ((ImageView) holder.view.findViewById(R.id.imageView_history_manual));
+        if(history.isManual){
+            imageViewManual.setImageResource(R.drawable.ic_casino);
+        }
+        else{
+            imageViewManual.setImageResource(R.drawable.ic_roulette);
+        }
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return mHistoryList.size();
+    }
+
+    void removeItem(int position){
+        long id = mHistoryList.remove(position)._id;
+        notifyItemRemoved(position);
+        notifyItemRangeChanged(position, getItemCount());
+
+        StrategyDbHelper dbHelper = new StrategyDbHelper(mContext);
+        dbHelper.deleteHistory(id);
+    }
+
+    void addItem(int position, History history) {
+        mHistoryList.add(position, history);
+        notifyItemInserted(position);
+        notifyItemRangeChanged(position, getItemCount());
+
+        StrategyDbHelper dbHelper = new StrategyDbHelper(mContext);
+        dbHelper.add(history);
     }
 }
