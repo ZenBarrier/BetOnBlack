@@ -6,6 +6,9 @@ android {
     defaultConfig {
         applicationId "com.zenbarrier.betonblack"
         minSdkVersion 19
+        vectorDrawables{
+            useSupportLibrary true
+        }
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"
