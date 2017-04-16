@@ -6,4 +6,7 @@
 
     <color name="colorProfit">#10b903</color>
     <color name="colorLoss">#ff1010</color>
+
+    <color name="colorEdit">#00cfea</color>
+    <color name="colorDelete">#ff1d1d</color>
 </resources>
