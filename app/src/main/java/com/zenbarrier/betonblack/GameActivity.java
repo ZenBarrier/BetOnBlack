@@ -233,7 +233,7 @@ public class GameActivity extends AppCompatActivity {
                 if(justLost){
                     bet = Math.min(mBet + 1, mMax);
                 }else{
-                    bet = mBet-1;
+                    bet = Math.max(mBet - 1, mMin);
                 }
                 break;
             case 2://Fibonaci
