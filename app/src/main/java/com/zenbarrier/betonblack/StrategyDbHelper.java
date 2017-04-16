@@ -86,7 +86,7 @@ class StrategyDbHelper extends SQLiteOpenHelper {
                 StrategyContract.HistoryEntry.COLUMN_DATE,
                 StrategyContract.HistoryEntry.COLUMN_MANUAL,
         };
-        String sortOrder = StrategyContract.HistoryEntry.COLUMN_DATE + " ASC";
+        String sortOrder = StrategyContract.HistoryEntry.COLUMN_DATE + " DESC";
         return db.query(
                 StrategyContract.HistoryEntry.TABLE_NAME,
                 projection,

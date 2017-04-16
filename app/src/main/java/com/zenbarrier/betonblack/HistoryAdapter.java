@@ -9,7 +9,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by Anthony on 4/14/2017.
@@ -48,7 +52,15 @@ class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHolder>{
         ((TextView)holder.view.findViewById(R.id.textView_history_name)).setText(history.name);
         ((TextView)holder.view.findViewById(R.id.textView_history_startCash)).setText(String.valueOf(history.startCash));
         ((TextView)holder.view.findViewById(R.id.textView_history_endCash)).setText(String.valueOf(history.endCash));
-        ((TextView)holder.view.findViewById(R.id.textView_history_date)).setText(String.valueOf(history.date));
+
+        SimpleDateFormat dt = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.US);
+        try {
+            Date date = dt.parse(history.date);
+            SimpleDateFormat dt1 = new SimpleDateFormat("MM/dd/yy", Locale.US);
+            ((TextView)holder.view.findViewById(R.id.textView_history_date)).setText(dt1.format(date));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
         TextView textViewProfit = ((TextView)holder.view.findViewById(R.id.textView_history_profit));
         if(profit >= 0){
