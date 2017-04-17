@@ -53,4 +53,5 @@
     <string name="new_history_name">Name this entry</string>
     <string name="game_gambling_money">Enter the amount of money you will gamble with.</string>
     <string name="game_set_cash">Set Cash</string>
+    <string name="history_adapter_delete">Delete %s?</string>
 </resources>
