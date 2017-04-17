@@ -51,4 +51,6 @@
     <string name="loss_label">Loss</string>
     <string name="save">Save</string>
     <string name="new_history_name">Name this entry</string>
+    <string name="game_gambling_money">Enter the amount of money you will gamble with.</string>
+    <string name="game_set_cash">Set Cash</string>
 </resources>

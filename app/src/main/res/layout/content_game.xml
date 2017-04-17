@@ -66,7 +66,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:labelFor="@id/editText_game0_cash"
-                android:text="Enter the amount of money you will gamble with."
+                android:text="@string/game_gambling_money"
                 ads:layout_constraintTop_toTopOf="parent"
                 ads:layout_constraintBottom_toBottomOf="parent"
                 ads:layout_constraintLeft_toLeftOf="parent"
@@ -76,7 +76,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:onClick="setCash"
-                android:text="Set Cash"
+                android:text="@string/game_set_cash"
                 ads:layout_constraintTop_toBottomOf="@id/editText_game0_cash"
                 ads:layout_constraintLeft_toLeftOf="parent"
                 ads:layout_constraintRight_toRightOf="parent"/>
