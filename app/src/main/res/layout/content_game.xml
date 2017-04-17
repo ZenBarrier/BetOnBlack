@@ -10,6 +10,16 @@
     android:layout_height="match_parent"
     tools:context="com.zenbarrier.betonblack.GameActivity">
 
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/adView"
+        android:background="@color/colorPrimaryDark"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
     <!-- view for AdMob Banner Ad -->
 
     <com.google.android.gms.ads.AdView
