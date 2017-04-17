@@ -1,6 +1,5 @@
 package com.zenbarrier.betonblack;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -63,7 +62,7 @@ public class NewStrategyActivity extends AppCompatActivity {
             Intent data = new Intent();
             data.putExtra(StrategyListFragment.KEY_STRATEGY ,strategy);
             data.putExtra(StrategyListFragment.KEY_POSITION ,mPosition);
-            setResult(Activity.RESULT_OK, data);
+            setResult(AppCompatActivity.RESULT_OK, data);
             finish();
         }
         catch (NumberFormatException e){
@@ -72,7 +71,7 @@ public class NewStrategyActivity extends AppCompatActivity {
     }
 
     public void cancelStrategy(View view) {
-        setResult(Activity.RESULT_CANCELED);
+        setResult(AppCompatActivity.RESULT_CANCELED);
         finish();
     }
 }
