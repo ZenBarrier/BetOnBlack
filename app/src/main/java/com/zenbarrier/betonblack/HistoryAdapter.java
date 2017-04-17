@@ -8,11 +8,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.PopupWindow;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -52,7 +49,7 @@ class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHolder>{
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, final int position) {
+    public void onBindViewHolder(final ViewHolder holder, int position) {
         final History history = mHistoryList.get(position);
         int profit = history.endCash - history.startCash;
         ((TextView)holder.view.findViewById(R.id.textView_history_name)).setText(history.name);
@@ -97,7 +94,7 @@ class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHolder>{
                 builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        removeItem(position);
+                        removeItem(holder.getAdapterPosition());
                     }
                 });
                 builder.setNegativeButton("Cancel", null);
@@ -113,7 +110,7 @@ class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHolder>{
         return mHistoryList.size();
     }
 
-    void removeItem(int position){
+    private void removeItem(int position){
         long id = mHistoryList.remove(position)._id;
         notifyItemRemoved(position);
         notifyItemRangeChanged(position, getItemCount());
@@ -122,12 +119,12 @@ class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHolder>{
         dbHelper.deleteHistory(id);
     }
 
-    void addItem(int position, History history) {
+    /*void addItem(int position, History history) {
         mHistoryList.add(position, history);
         notifyItemInserted(position);
         notifyItemRangeChanged(position, getItemCount());
 
         StrategyDbHelper dbHelper = new StrategyDbHelper(mContext);
         dbHelper.add(history);
-    }
+    }*/
 }
