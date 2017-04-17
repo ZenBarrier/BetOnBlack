@@ -1,9 +1,86 @@
-<?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/constraintLayout_newStrategy_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="16dp"
     tools:context="com.zenbarrier.betonblack.NewHistoryActivity">
+
+
+    <TextView
+        android:id="@+id/textView_newHistory_nameLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:labelFor="@+id/editText_newHistory_name"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:text="@string/new_history_name" />
+
+    <EditText
+        android:id="@+id/editText_newHistory_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/textView_newHistory_nameLabel"
+        app:layout_constraintLeft_toLeftOf="@id/textView_newHistory_nameLabel"
+        android:ems="10"
+        android:inputType="textPersonName"/>
+
+    <TextView
+        android:id="@+id/textView_newHistory_startCashLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:labelFor="@+id/editText_newHistory_startCash"
+        app:layout_constraintTop_toBottomOf="@id/editText_newHistory_name"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:text="@string/start_cash_label" />
+
+    <EditText
+        android:id="@+id/editText_newHistory_startCash"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/textView_newHistory_startCashLabel"
+        app:layout_constraintLeft_toLeftOf="@id/textView_newHistory_startCashLabel"
+        android:ems="10"
+        android:inputType="number"/>
+
+    <TextView
+        android:id="@+id/textView_newHistory_endCashLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:labelFor="@+id/editText_newHistory_endCash"
+        app:layout_constraintTop_toBottomOf="@id/editText_newHistory_startCash"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:text="@string/end_cash_label"/>
+
+    <EditText
+        android:id="@+id/editText_newHistory_endCash"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/textView_newHistory_endCashLabel"
+        app:layout_constraintLeft_toLeftOf="@id/textView_newHistory_endCashLabel"
+        android:ems="10"
+        android:inputType="number"/>
+
+    <Button
+        android:id="@+id/button_newHistory_save"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="saveHistory"
+        android:text="@string/newstrategy_save"
+        app:layout_constraintTop_toBottomOf="@id/editText_newHistory_endCash"
+        app:layout_constraintLeft_toRightOf="@+id/button_newHistory_cancel"
+        app:layout_constraintRight_toRightOf="parent"/>
+
+    <Button
+        android:id="@+id/button_newHistory_cancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="cancelHistory"
+        android:text="@string/newstrategy_cancel"
+        app:layout_constraintTop_toTopOf="@id/button_newHistory_save"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/button_newHistory_save"/>
+
 
 </android.support.constraint.ConstraintLayout>

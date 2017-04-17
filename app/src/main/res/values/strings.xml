@@ -50,4 +50,5 @@
     <string name="profit_label">Profit</string>
     <string name="loss_label">Loss</string>
     <string name="save">Save</string>
+    <string name="new_history_name">Name this entry</string>
 </resources>
