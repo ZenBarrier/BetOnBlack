@@ -1,5 +1,7 @@
 package com.zenbarrier.betonblack;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -15,9 +17,15 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.zenbarrier.betonblack.StrategyListFragment.KEY_STRATEGY;
+
 
 public class HistoryFragment extends Fragment {
 
+    private static final int REQUEST_NEW_HISTORY = 1;
+    private static final int REQUEST_EDIT_HISTORY = 2;
+    private static final String KEY_POSITION = "KEY_POSITION";
+    private static final String KEY_HISTORY = "KEY_HISTORY";
     List<History> mHistoryList;
     RecyclerView mRecyclerView;
     RecyclerView.LayoutManager mLayoutManager;
@@ -99,9 +107,33 @@ public class HistoryFragment extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getActivity(), "hello", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent( getActivity(),NewHistoryActivity.class);
+                HistoryFragment.this.startActivityForResult(intent, REQUEST_NEW_HISTORY);
             }
         });
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch(requestCode){
+            case REQUEST_NEW_HISTORY:
+                if(resultCode == Activity.RESULT_OK){
+                    History history = (History) data.getSerializableExtra(KEY_HISTORY);
+                    mHistoryList.add(history);
+                }
+                break;
+            case REQUEST_EDIT_HISTORY:
+                if(resultCode == Activity.RESULT_OK){
+                    int position = data.getIntExtra(KEY_POSITION,0);
+                    History history = (History) data.getSerializableExtra(KEY_STRATEGY);
+                    mHistoryList.set(position, history);
+                }
+                break;
+            default:
+                break;
+        }
+        mAdapter.notifyDataSetChanged();
     }
 
 }

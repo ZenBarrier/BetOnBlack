@@ -50,6 +50,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".NewHistoryActivity"
+            android:parentActivityName=".MainTabbedActivity"
+            android:theme="@style/Theme.MyDialog"/>
     </application>
 
 </manifest>
