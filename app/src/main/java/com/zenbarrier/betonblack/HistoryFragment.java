@@ -23,8 +23,8 @@ public class HistoryFragment extends Fragment {
 
     private static final int REQUEST_NEW_HISTORY = 1;
     private static final int REQUEST_EDIT_HISTORY = 2;
-    private static final String KEY_POSITION = "KEY_POSITION";
-    private static final String KEY_HISTORY = "KEY_HISTORY";
+    static final String KEY_POSITION = "KEY_POSITION";
+    static final String KEY_HISTORY = "KEY_HISTORY";
     List<History> mHistoryList;
     RecyclerView mRecyclerView;
     RecyclerView.LayoutManager mLayoutManager;
@@ -119,7 +119,7 @@ public class HistoryFragment extends Fragment {
             case REQUEST_NEW_HISTORY:
                 if(resultCode == Activity.RESULT_OK){
                     History history = (History) data.getSerializableExtra(KEY_HISTORY);
-                    mHistoryList.add(history);
+                    mHistoryList.add(0, history);
                 }
                 break;
             case REQUEST_EDIT_HISTORY:
