@@ -14,6 +14,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.TimeZone;
 
 /**
  * Created by Anthony on 4/14/2017.
@@ -54,9 +55,11 @@ class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHolder>{
         ((TextView)holder.view.findViewById(R.id.textView_history_endCash)).setText(String.valueOf(history.endCash));
 
         SimpleDateFormat dt = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.US);
+        dt.setTimeZone(TimeZone.getTimeZone("UTC"));
         try {
             Date date = dt.parse(history.date);
             SimpleDateFormat dt1 = new SimpleDateFormat("MM/dd/yy", Locale.US);
+            dt1.setTimeZone(TimeZone.getDefault());
             ((TextView)holder.view.findViewById(R.id.textView_history_date)).setText(dt1.format(date));
         } catch (ParseException e) {
             e.printStackTrace();

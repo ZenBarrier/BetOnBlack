@@ -10,6 +10,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.TimeZone;
 
 public class NewHistoryActivity extends AppCompatActivity {
     EditText mTextName;
@@ -37,6 +38,7 @@ public class NewHistoryActivity extends AppCompatActivity {
         StrategyDbHelper dbHelper = new StrategyDbHelper(this);
         history._id = dbHelper.add(history);
         SimpleDateFormat dt = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.US);
+        dt.setTimeZone(TimeZone.getTimeZone("UTC"));
         history.date = dt.format(new Date());
 
         Intent data = new Intent();
