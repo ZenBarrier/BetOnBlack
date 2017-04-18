@@ -40,10 +40,7 @@
     <string name="game_total_profit">Total Profit Made</string>
     <string name="game_win_profit">Profit if Win</string>
     <string name="title_activity_main_tabbed">Bet On Black</string>
-    <string name="section_format">Hello World from section: %1$d</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="content_description_image_history">Icon for history item.</string>
     <string name="start_cash_label">Start Cash</string>
     <string name="end_cash_label">End Cash</string>
@@ -54,4 +51,7 @@
     <string name="game_gambling_money">Enter the amount of money you will gamble with.</string>
     <string name="game_set_cash">Set Cash</string>
     <string name="history_adapter_delete">Delete %s?</string>
+    <string name="dollar_value">$%d</string>
+    <string name="total_profit">Total Profit</string>
+    <string name="total_loss">Total Loss</string>
 </resources>

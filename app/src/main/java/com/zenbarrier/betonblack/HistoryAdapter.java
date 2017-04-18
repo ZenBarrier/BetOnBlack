@@ -2,6 +2,7 @@ package com.zenbarrier.betonblack;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
@@ -26,6 +27,7 @@ import java.util.TimeZone;
 class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHolder>{
     private List<History> mHistoryList;
     private Context mContext;
+    private Fragment mFragment;
 
     static class ViewHolder extends RecyclerView.ViewHolder{
         View view;
@@ -35,9 +37,10 @@ class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHolder>{
         }
     }
 
-    HistoryAdapter(Context context, List<History> historyList){
+    HistoryAdapter(Context context, List<History> historyList, Fragment fragment){
         mHistoryList = historyList;
         mContext = context;
+        mFragment = fragment;
     }
 
     @Override
@@ -117,6 +120,7 @@ class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHolder>{
 
         StrategyDbHelper dbHelper = new StrategyDbHelper(mContext);
         dbHelper.deleteHistory(id);
+        ((HistoryFragment)mFragment).setProfitDisplay();
     }
 
     /*void addItem(int position, History history) {

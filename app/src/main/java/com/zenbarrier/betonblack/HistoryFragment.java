@@ -7,14 +7,17 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import static com.zenbarrier.betonblack.StrategyListFragment.KEY_STRATEGY;
 
@@ -60,7 +63,7 @@ public class HistoryFragment extends Fragment {
         mHistoryList = new ArrayList<>();
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
-        mAdapter = new HistoryAdapter(getActivity(), mHistoryList);
+        mAdapter = new HistoryAdapter(getActivity(), mHistoryList, HistoryFragment.this);
         mRecyclerView.setAdapter(mAdapter);
 
         DatabaseLoader databaseLoader = new DatabaseLoader();
@@ -99,6 +102,7 @@ public class HistoryFragment extends Fragment {
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
             mDbHelper.close();
+            setProfitDisplay();
         }
     }
 
@@ -110,6 +114,25 @@ public class HistoryFragment extends Fragment {
                 HistoryFragment.this.startActivityForResult(intent, REQUEST_NEW_HISTORY);
             }
         });
+    }
+
+    public void setProfitDisplay(){
+        TextView textProfitLabel = (TextView) mView.findViewById(R.id.textView_history_profitLabel);
+        TextView textProfit = (TextView) mView.findViewById(R.id.textView_history_profit);
+
+        int totalProfit = 0;
+        for(History history: mHistoryList){
+            totalProfit += (history.endCash - history.startCash);
+        }
+        if(totalProfit >= 0){
+            textProfitLabel.setText(R.string.total_profit);
+            textProfit.setText(String.format(Locale.getDefault(), getString(R.string.dollar_value), totalProfit));
+            textProfit.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorProfit));
+        }else{
+            textProfitLabel.setText(R.string.total_loss);
+            textProfit.setText(String.format(Locale.getDefault(), getString(R.string.dollar_value), Math.abs(totalProfit)));
+            textProfit.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorLoss));
+        }
     }
 
     @Override
@@ -133,6 +156,7 @@ public class HistoryFragment extends Fragment {
                 break;
         }
         mAdapter.notifyDataSetChanged();
+        setProfitDisplay();
     }
 
 }
