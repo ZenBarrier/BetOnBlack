@@ -8,13 +8,58 @@
     android:layout_height="match_parent"
     tools:context="com.zenbarrier.betonblack.MainTabbedActivity">
 
+    <android.support.v7.widget.CardView
+        android:id="@+id/cardView_history_data"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="6dp"
+        app:cardCornerRadius="4dp"
+        app:contentPadding="6dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/textView_history_profitLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="Total Profit"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintBottom_toBottomOf="@+id/textView_history_profit"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintLeft_toRightOf="@id/textView_history_profitLabel"
+                app:layout_constraintRight_toLeftOf="@+id/textView_history_profit"
+                app:layout_constraintBottom_toBottomOf="@id/textView_history_profitLabel"
+                android:lines="1"
+                android:text="@string/ellipses" />
+
+            <TextView
+                android:id="@+id/textView_history_profit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="24sp"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="$12345678" />
+        </android.support.constraint.ConstraintLayout>
+    </android.support.v7.widget.CardView>
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recylerView_history_list"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginTop="6dp"
         ads:layout_constraintBottom_toBottomOf="parent"
+        ads:layout_constraintLeft_toLeftOf="parent"
         ads:layout_constraintRight_toRightOf="parent"
-        ads:layout_constraintTop_toTopOf="parent"
-        ads:layout_constraintLeft_toLeftOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/cardView_history_data" />
 
 </android.support.constraint.ConstraintLayout>

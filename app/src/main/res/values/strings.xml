@@ -26,7 +26,7 @@
     <string name="mainrecycler_min">Min Bet</string>
     <string name="mainrecycler_max">Max Bet</string>
     <string name="title_activity_game">GameActivity</string>
-    <string name="ellipses">............................................................................................................................................</string>
+    <string name="ellipses">.......................................................................................................................................................................................</string>
     <string name="game_set_betting_amount">Set Betting Amount</string>
     <string name="game_lost">Lost</string>
     <string name="game_button_set_starting_bet">Set Starting Bet</string>
