@@ -3,9 +3,11 @@ package com.zenbarrier.betonblack;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
@@ -22,6 +24,8 @@ import android.widget.ViewAnimator;
 import java.util.Locale;
 
 public class GameActivity extends AppCompatActivity {
+
+    public final static String KEY_HISTORY = "KEY_HISTORY";
 
     private Strategy mStrategy;
     private ViewAnimator mAnimator;
@@ -300,8 +304,13 @@ public class GameActivity extends AppCompatActivity {
     }
 
     public void saveData(MenuItem item) {
+
         History history = new History(0, mStrategy.name, mStartingCash, mCash, false, null);
-        StrategyDbHelper dbHelper = new StrategyDbHelper(this);
-        dbHelper.add(history);
+        /*StrategyDbHelper dbHelper = new StrategyDbHelper(this);
+        dbHelper.add(history);*/
+        Intent intent = new Intent(this, NewHistoryActivity.class);
+        intent.putExtra(KEY_HISTORY, history);
+        startActivity(intent);
+
     }
 }

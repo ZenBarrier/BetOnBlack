@@ -14,6 +14,7 @@ import java.util.Locale;
 import java.util.TimeZone;
 
 public class NewHistoryActivity extends AppCompatActivity {
+    History mHistory;
     EditText mTextName;
     EditText mTextStartCash;
     EditText mTextEndCash;
@@ -27,6 +28,16 @@ public class NewHistoryActivity extends AppCompatActivity {
         mTextName = (EditText) findViewById(R.id.editText_newHistory_name);
         mTextStartCash = (EditText) findViewById(R.id.editText_newHistory_startCash);
         mTextEndCash = (EditText) findViewById(R.id.editText_newHistory_endCash);
+
+        Intent intent = getIntent();
+        if(intent.hasExtra(GameActivity.KEY_HISTORY)){
+            mHistory = (History) intent.getSerializableExtra(GameActivity.KEY_HISTORY);
+            mTextName.setText(mHistory.name);
+            mTextStartCash.setText(String.valueOf(mHistory.startCash));
+            mTextEndCash.setText(String.valueOf(mHistory.endCash));
+            mTextStartCash.setEnabled(false);
+            mTextEndCash.setEnabled(false);
+        }
     }
 
     public void saveHistory(View view) {
@@ -44,17 +55,21 @@ public class NewHistoryActivity extends AppCompatActivity {
             findViewById(R.id.constraintLayout_newHistory_root).startAnimation(AnimationUtils.loadAnimation(this, R.anim.vibrate));
             return;
         }
-
-        History history = new History(name, startCash, endCash, true);
+        if(mHistory == null) {
+            mHistory = new History(name, startCash, endCash, true);
+        }else{
+            mHistory.name = name;
+            mHistory.isManual = false;
+        }
 
         StrategyDbHelper dbHelper = new StrategyDbHelper(this);
-        history._id = dbHelper.add(history);
+        mHistory._id = dbHelper.add(mHistory);
         SimpleDateFormat dt = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.US);
         dt.setTimeZone(TimeZone.getTimeZone("UTC"));
-        history.date = dt.format(new Date());
+        mHistory.date = dt.format(new Date());
 
         Intent data = new Intent();
-        data.putExtra(HistoryFragment.KEY_HISTORY ,history);
+        data.putExtra(HistoryFragment.KEY_HISTORY ,mHistory);
         setResult(AppCompatActivity.RESULT_OK, data);
         finish();
 
