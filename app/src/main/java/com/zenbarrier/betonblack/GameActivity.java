@@ -150,6 +150,7 @@ public class GameActivity extends AppCompatActivity {
         mTextMax.setText(String.valueOf(mMax));
         mTextStrategyMode.setText(mStrategyMode);
 
+        mPickerBet.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
         mPickerBet.setMinValue(mMin);
         mBet = mMin;
         mPickerBet.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
