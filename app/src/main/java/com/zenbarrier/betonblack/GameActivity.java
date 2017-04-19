@@ -5,6 +5,7 @@ import com.google.android.gms.ads.AdView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
@@ -162,7 +163,15 @@ public class GameActivity extends AppCompatActivity {
 
     private void setInfo() {
         mTextCash.setText(String.format(Locale.getDefault(),getString(R.string.dollar_value), mCash));
-        mTextTotalProfit.setText(String.format(Locale.getDefault(),getString(R.string.dollar_value), mCash - mStartingCash));
+
+        int profit = mCash - mStartingCash;
+        mTextTotalProfit.setText(String.format(Locale.getDefault(),getString(R.string.dollar_value), profit));
+        if(profit>=0){
+            mTextTotalProfit.setTextColor(ContextCompat.getColor(this, R.color.colorProfit));
+        }else{
+            mTextTotalProfit.setTextColor(ContextCompat.getColor(this, R.color.colorLoss));
+        }
+
         mTextOdds.setText(String.valueOf(String.format(Locale.getDefault(),getString(R.string.percent_value), mOdds * 100.0)));
         mTextOddsLabel.setText(String.format(Locale.getDefault(), getResources().getString(R.string.game_odds_label), mRounds));
         mTextRounds.setText(String.valueOf(mRounds));
