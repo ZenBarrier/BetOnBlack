@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 
 import java.text.ParseException;
@@ -30,8 +31,19 @@ public class NewHistoryActivity extends AppCompatActivity {
 
     public void saveHistory(View view) {
         String name = mTextName.getText().toString();
-        int startCash = Integer.parseInt(mTextStartCash.getText().toString());
-        int endCash = Integer.parseInt(mTextEndCash.getText().toString());
+        int startCash, endCash;
+        try {
+            startCash = Integer.parseInt(mTextStartCash.getText().toString());
+            endCash = Integer.parseInt(mTextEndCash.getText().toString());
+        } catch(NumberFormatException e){
+            if(mTextStartCash.getText().length() == 0){
+                mTextStartCash.setError(getString(R.string.error_empty_number));
+            }if(mTextEndCash.getText().length() == 0){
+                mTextEndCash.setError(getString(R.string.error_empty_number));
+            }
+            findViewById(R.id.constraintLayout_newHistory_root).startAnimation(AnimationUtils.loadAnimation(this, R.anim.vibrate));
+            return;
+        }
 
         History history = new History(name, startCash, endCash, true);
 
