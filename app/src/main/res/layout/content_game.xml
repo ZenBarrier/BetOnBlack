@@ -55,11 +55,12 @@
                 android:id="@+id/editText_game0_cash"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="0dp"
                 android:ems="10"
+                android:imeOptions="actionGo"
                 android:inputType="number"
                 ads:layout_constraintLeft_toLeftOf="parent"
                 ads:layout_constraintRight_toRightOf="parent"
-                android:layout_marginTop="0dp"
                 ads:layout_constraintTop_toBottomOf="@+id/textView_game0_cashLabel" />
             <TextView
                 android:id="@+id/textView_game0_cashLabel"

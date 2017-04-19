@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,7 +17,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.NumberPicker;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.ViewAnimator;
 
 import java.util.Locale;
@@ -55,14 +56,22 @@ public class GameActivity extends AppCompatActivity {
         AdRequest adRequest = new AdRequest.Builder()
                 .setRequestAgent("android_studio:ad_template").build();
         mAdView.loadAd(adRequest);
-        // Toasts the test ad message on the screen. Remove this after defining your own ad unit ID.
-        Toast.makeText(this, TOAST_TEXT, Toast.LENGTH_LONG).show();
 
         Intent intent = getIntent();
         mStrategy = (Strategy) intent.getSerializableExtra(StrategyListFragment.KEY_STRATEGY);
         setTitle(mStrategy.name);
 
         mAnimator = (ViewAnimator) findViewById(R.id.viewAnimator_game_view);
+        findViewById(R.id.editText_game0_cash).setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if(event.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER){
+                    setCash(v);
+                    return true;
+                }
+                return false;
+            }
+        });
     }
 
     @Override
@@ -92,17 +101,9 @@ public class GameActivity extends AppCompatActivity {
         return true;
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-
-        return super.onOptionsItemSelected(item);
-
-    }
 
     public void setCash(View view){
+        Utility.hideKeyboard(this);
         EditText cashText = (EditText) findViewById(R.id.editText_game0_cash);
         String cashString = cashText.getText().toString();
         if(cashString.length() == 0){
