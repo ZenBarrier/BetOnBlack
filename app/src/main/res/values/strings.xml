@@ -55,4 +55,6 @@
     <string name="total_profit">Total Profit</string>
     <string name="total_loss">Total Loss</string>
     <string name="error_empty_number">Enter amount</string>
+    <string name="error_min_bet">You need at least $%d to make a bet.</string>
+    <string name="percent_value">%.2f%%</string>
 </resources>

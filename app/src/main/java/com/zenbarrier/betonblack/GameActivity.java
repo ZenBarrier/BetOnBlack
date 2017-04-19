@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -22,9 +21,6 @@ import android.widget.ViewAnimator;
 import java.util.Locale;
 
 public class GameActivity extends AppCompatActivity {
-    // Remove the below line after defining your own ad unit ID.
-    private static final String TOAST_TEXT = "Test ads are being shown. "
-            + "To show live ads, replace the ad unit ID in res/values/strings.xml with your own ad unit ID.";
 
     private Strategy mStrategy;
     private ViewAnimator mAnimator;
@@ -107,9 +103,9 @@ public class GameActivity extends AppCompatActivity {
         EditText cashText = (EditText) findViewById(R.id.editText_game0_cash);
         String cashString = cashText.getText().toString();
         if(cashString.length() == 0){
-            cashText.setError("Enter amount");
+            cashText.setError(getString(R.string.error_empty_number));
         }else if(Integer.parseInt(cashString)<mStrategy.minBet){
-            cashText.setError("You need at least $"+mStrategy.minBet+" to make a bet.");
+            cashText.setError(String.format(Locale.getDefault(), getString(R.string.error_min_bet),mStrategy.minBet));
         }else{
             mCash = Integer.parseInt(cashString);
             initializeInfo();
@@ -165,14 +161,14 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private void setInfo() {
-        mTextCash.setText(String.format(Locale.getDefault(),"$%d", mCash));
-        mTextTotalProfit.setText(String.format(Locale.getDefault(),"$%d", mCash - mStartingCash));
-        mTextOdds.setText(String.valueOf(String.format(Locale.getDefault(),"%.2f%%", mOdds * 100.0)));
+        mTextCash.setText(String.format(Locale.getDefault(),getString(R.string.dollar_value), mCash));
+        mTextTotalProfit.setText(String.format(Locale.getDefault(),getString(R.string.dollar_value), mCash - mStartingCash));
+        mTextOdds.setText(String.valueOf(String.format(Locale.getDefault(),getString(R.string.percent_value), mOdds * 100.0)));
         mTextOddsLabel.setText(String.format(Locale.getDefault(), getResources().getString(R.string.game_odds_label), mRounds));
         mTextRounds.setText(String.valueOf(mRounds));
-        mTextBettingAmount.setText(String.format(Locale.getDefault(),"$%d", mBet));
+        mTextBettingAmount.setText(String.format(Locale.getDefault(),getString(R.string.dollar_value), mBet));
 
-        mTextWinProfit.setText(String.format(Locale.getDefault(),"$%d", mCash - mStartingCash + mBet));
+        mTextWinProfit.setText(String.format(Locale.getDefault(),getString(R.string.dollar_value), mCash - mStartingCash + mBet));
 
 
         mPickerBet.setMaxValue(Math.min(mCash, mMax));
@@ -204,7 +200,7 @@ public class GameActivity extends AppCompatActivity {
         mButtonWon.setVisibility(View.VISIBLE);
         mButtonChangeBet.setVisibility(View.VISIBLE);
         mTextBettingAmount.setVisibility(View.VISIBLE);
-        mTextBettingAmount.setText(String.format(Locale.getDefault(),"$%d", mPickerBet.getValue()));
+        mTextBettingAmount.setText(String.format(Locale.getDefault(),getString(R.string.dollar_value), mPickerBet.getValue()));
         mStartingBet = mPickerBet.getValue();
         mBet = mPickerBet.getValue();
     }
