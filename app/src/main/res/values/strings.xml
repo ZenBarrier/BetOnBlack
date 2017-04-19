@@ -57,4 +57,6 @@
     <string name="error_empty_number">Enter amount</string>
     <string name="error_min_bet">You need at least $%d to make a bet.</string>
     <string name="percent_value">%.2f%%</string>
+    <string name="save_question">Save?</string>
+    <string name="delete">Delete</string>
 </resources>

@@ -92,15 +92,15 @@ class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHolder>{
             public boolean onLongClick(View v) {
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-                builder.setTitle("Delete");
+                builder.setTitle(R.string.delete);
                 builder.setMessage(String.format(Locale.getDefault(), mContext.getString(R.string.history_adapter_delete), history.name));
-                builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                builder.setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         removeItem(holder.getAdapterPosition());
                     }
                 });
-                builder.setNegativeButton("Cancel", null);
+                builder.setNegativeButton(R.string.newstrategy_cancel, null);
                 builder.show();
 
                 return true;
