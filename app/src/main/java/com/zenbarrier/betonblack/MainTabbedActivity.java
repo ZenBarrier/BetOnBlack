@@ -82,6 +82,10 @@ public class MainTabbedActivity extends AppCompatActivity {
             }
         });
 
+        if(getIntent().hasExtra(GameActivity.KEY_SAVED)){
+            mViewPager.setCurrentItem(HISTORY_POSITION);
+        }
+
         // Load an ad into the AdMob banner view.
         mAdView = (AdView) findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder()
