@@ -61,4 +61,5 @@
     <string name="delete">Delete</string>
     <string name="no_save">Don\'t Save</string>
     <string name="dialog_save_back">Save this gambling data before going back?</string>
+    <string name="error_max_less_min">Max bet must be higher than min bet.</string>
 </resources>

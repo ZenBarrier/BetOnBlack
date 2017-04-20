@@ -51,6 +51,12 @@ public class NewStrategyActivity extends AppCompatActivity {
             int maxBet = Integer.parseInt(mMaxBet.getText().toString());
             int strategyChoice = mStrategyChoice.getSelectedItemPosition();
 
+            if(maxBet <= minBet){
+                mMaxBet.setError(getString(R.string.error_max_less_min));
+                findViewById(R.id.constraintLayout_newStrategy_root).startAnimation(AnimationUtils.loadAnimation(this, R.anim.vibrate));
+                return;
+            }
+
             Strategy strategy = new Strategy(0, strategyName, minBet, maxBet, strategyChoice);
             if(mIsEditing){
                 strategy._id = mEditId;
@@ -66,6 +72,11 @@ public class NewStrategyActivity extends AppCompatActivity {
             finish();
         }
         catch (NumberFormatException e){
+            if(mMinBet.getText().length() == 0){
+                mMinBet.setError(getString(R.string.error_empty_number));
+            }if(mMaxBet.getText().length() == 0){
+                mMaxBet.setError(getString(R.string.error_empty_number));
+            }
             findViewById(R.id.constraintLayout_newStrategy_root).startAnimation(AnimationUtils.loadAnimation(this, R.anim.vibrate));
         }
     }
