@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -19,6 +20,17 @@ import java.util.List;
 class StrategyAdapter extends RecyclerView.Adapter<StrategyAdapter.ViewHolder> {
     private List<Strategy> mStrategyList;
     private Context mContext;
+    private OnStartDragListener mDragListener;
+
+    public interface OnStartDragListener {
+
+        /**
+         * Called when a view is requesting a start of a drag.
+         *
+         * @param viewHolder The holder of the view to drag.
+         */
+        void onStartDrag(RecyclerView.ViewHolder viewHolder);
+    }
 
     static class ViewHolder extends RecyclerView.ViewHolder{
         View view;
@@ -28,9 +40,16 @@ class StrategyAdapter extends RecyclerView.Adapter<StrategyAdapter.ViewHolder> {
         }
     }
 
-    StrategyAdapter(Context context, List<Strategy> strategyList){
+    void onItemMove(int fromPosition, int toPosition){
+        Strategy prev = mStrategyList.remove(fromPosition);
+        mStrategyList.add(toPosition > fromPosition ? toPosition - 1 : toPosition, prev);
+        notifyItemMoved(fromPosition, toPosition);
+    }
+
+    StrategyAdapter(Context context, List<Strategy> strategyList, OnStartDragListener dragListener){
         mStrategyList = strategyList;
         mContext = context;
+        mDragListener = dragListener;
     }
 
     @Override
@@ -44,7 +63,7 @@ class StrategyAdapter extends RecyclerView.Adapter<StrategyAdapter.ViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, int position) {
         final Strategy strategy = mStrategyList.get(position);
         ((TextView)holder.view.findViewById(R.id.textView_mainRecyclerlist_name)).setText(String.valueOf(strategy.name));
         ((TextView)holder.view.findViewById(R.id.textView_mainRecyclerlist_minBet)).setText(String.valueOf(strategy.minBet));
@@ -59,6 +78,16 @@ class StrategyAdapter extends RecyclerView.Adapter<StrategyAdapter.ViewHolder> {
                 Intent intent = new Intent(mContext, GameActivity.class);
                 intent.putExtra(StrategyListFragment.KEY_STRATEGY, strategy);
                 mContext.startActivity(intent);
+            }
+        });
+
+        holder.view.findViewById(R.id.imageView_mainRecyclerlist_drag).setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if(event.getAction() == MotionEvent.ACTION_DOWN){
+                    mDragListener.onStartDrag(holder);
+                }
+                return false;
             }
         });
     }

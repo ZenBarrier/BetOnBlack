@@ -27,18 +27,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class StrategyListFragment extends Fragment {
+public class StrategyListFragment extends Fragment implements StrategyAdapter.OnStartDragListener {
 
     public static final int REQUEST_NEW_STRATEGY = 1;
     public static final int REQUEST_EDIT_STRATEGY = 2;
     public static final String KEY_STRATEGY = "strategy";
     public static final String KEY_POSITION = "position";
 
-    RecyclerView mRecyclerView;
-    StrategyAdapter mAdapter;
-    RecyclerView.LayoutManager mLayoutManager;
-    List<Strategy> mStrategyList;
-    View mView;
+    private RecyclerView mRecyclerView;
+    private StrategyAdapter mAdapter;
+    private RecyclerView.LayoutManager mLayoutManager;
+    private List<Strategy> mStrategyList;
+    private View mView;
+    private ItemTouchHelper mItemTouchHelper;
 
     public static Fragment newInstance(){
         return new StrategyListFragment();
@@ -75,6 +76,11 @@ public class StrategyListFragment extends Fragment {
                 break;
         }
         mAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onStartDrag(RecyclerView.ViewHolder viewHolder) {
+        mItemTouchHelper.startDrag(viewHolder);
     }
 
     private class DatabaseLoader extends AsyncTask<Void, Void, Void>{
@@ -126,7 +132,7 @@ public class StrategyListFragment extends Fragment {
         mStrategyList = new ArrayList<>();
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
-        mAdapter = new StrategyAdapter(getActivity(), mStrategyList);
+        mAdapter = new StrategyAdapter(getActivity(), mStrategyList, this);
         mRecyclerView.setAdapter(mAdapter);
 
         DatabaseLoader databaseLoader = new DatabaseLoader();
@@ -134,11 +140,20 @@ public class StrategyListFragment extends Fragment {
     }
 
     private void initSwipe(){
-        ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+        ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
 
             @Override
             public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
-                return false;
+                if(viewHolder.getItemViewType() != target.getItemViewType()) return false;
+
+                mAdapter.onItemMove(viewHolder.getAdapterPosition(), target.getAdapterPosition());
+                return true;
+            }
+
+            @Override
+            public void clearView(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
+                super.clearView(recyclerView, viewHolder);
+                //todo: save drag positions
             }
 
             @Override
@@ -183,8 +198,8 @@ public class StrategyListFragment extends Fragment {
                 super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
             }
         };
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
-        itemTouchHelper.attachToRecyclerView(mRecyclerView);
+        mItemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
+        mItemTouchHelper.attachToRecyclerView(mRecyclerView);
     }
 
     private void editStrategy(int position) {
