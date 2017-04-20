@@ -8,6 +8,7 @@
         android:orderInCategory="100"
         android:title="@string/save"
         android:onClick="saveData"
+        android:visible="false"
         android:icon="@drawable/ic_save"
         app:showAsAction="always" />
 

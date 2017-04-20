@@ -38,6 +38,7 @@ public class GameActivity extends AppCompatActivity {
     private AdView mAdView;
     private String mStrategyMode;
     private boolean mJustStarted = true;
+    private Menu mMenu;
     private static final double DOUBLE_ZERO_ODDS = 0.47368421052;//18 black 38 numbers
     //private static final double SINGLE_ZERO_ODDS = 0.48648648648;//18 black 37 numbers
 
@@ -98,6 +99,7 @@ public class GameActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_game, menu);
+        mMenu = menu;
         return true;
     }
 
@@ -117,7 +119,9 @@ public class GameActivity extends AppCompatActivity {
             mStartingBet = mMin;
             calculateOdds(mMin);
             setInfo();
+            changeBet(null);
             mAnimator.showNext();
+            mMenu.findItem(R.id.action_save).setVisible(true);
         }
     }
 
@@ -297,7 +301,10 @@ public class GameActivity extends AppCompatActivity {
         if(index == 0){
             super.onBackPressed();
         }else {
-            if(mJustStarted)mAnimator.showPrevious();
+            if(mJustStarted){
+                mAnimator.showPrevious();
+                mMenu.findItem(R.id.action_save).setVisible(false);
+            }
             else super.onBackPressed();
         }
     }
