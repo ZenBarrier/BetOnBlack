@@ -3,9 +3,11 @@ package com.zenbarrier.betonblack;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
@@ -305,7 +307,33 @@ public class GameActivity extends AppCompatActivity {
                 mAnimator.showPrevious();
                 mMenu.findItem(R.id.action_save).setVisible(false);
             }
-            else super.onBackPressed();
+            else {
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle(getString(R.string.save));
+                builder.setMessage(R.string.dialog_save_back);
+                builder.setPositiveButton(R.string.save, null);
+                builder.setNegativeButton(R.string.no_save, null);
+                builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialog) {
+                        GameActivity.super.onBackPressed();
+                    }
+                });
+                final AlertDialog backDialog = builder.create();
+                backDialog.setOnShowListener(new DialogInterface.OnShowListener() {
+                    @Override
+                    public void onShow(DialogInterface dialog) {
+                        backDialog.getButton(DialogInterface.BUTTON_POSITIVE).
+                                setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                saveData(null);
+                            }
+                        });
+                    }
+                });
+                backDialog.show();
+            }
         }
     }
 

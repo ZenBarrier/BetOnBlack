@@ -59,4 +59,6 @@
     <string name="percent_value">%.2f%%</string>
     <string name="save_question">Save?</string>
     <string name="delete">Delete</string>
+    <string name="no_save">Don\'t Save</string>
+    <string name="dialog_save_back">Save this gambling data before going back?</string>
 </resources>
