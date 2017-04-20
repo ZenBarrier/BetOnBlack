@@ -36,7 +36,6 @@ public class StrategyListFragment extends Fragment implements StrategyAdapter.On
 
     private RecyclerView mRecyclerView;
     private StrategyAdapter mAdapter;
-    private RecyclerView.LayoutManager mLayoutManager;
     private List<Strategy> mStrategyList;
     private View mView;
     private ItemTouchHelper mItemTouchHelper;
@@ -130,8 +129,8 @@ public class StrategyListFragment extends Fragment implements StrategyAdapter.On
     private void initValues(){
         mRecyclerView = (RecyclerView) mView.findViewById(R.id.recylerView_main_list);
         mStrategyList = new ArrayList<>();
-        mLayoutManager = new LinearLayoutManager(getActivity());
-        mRecyclerView.setLayoutManager(mLayoutManager);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        mRecyclerView.setLayoutManager(layoutManager);
         mAdapter = new StrategyAdapter(getActivity(), mStrategyList, this);
         mRecyclerView.setAdapter(mAdapter);
 
@@ -153,7 +152,7 @@ public class StrategyListFragment extends Fragment implements StrategyAdapter.On
             @Override
             public void clearView(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
                 super.clearView(recyclerView, viewHolder);
-                //todo: save drag positions
+                mAdapter.updatePositions();
             }
 
             @Override

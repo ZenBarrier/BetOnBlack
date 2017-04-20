@@ -16,6 +16,7 @@ class StrategyContract {
         static final String COLUMN_MIN_BET = "minBet";
         static final String COLUMN_MAX_BET = "maxBet";
         static final String COLUMN_STRATEGY_CHOICE = "choice";
+        static final String COLUMN_POSITION = "position";
 
     }
 

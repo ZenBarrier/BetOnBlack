@@ -3,8 +3,11 @@ package com.zenbarrier.betonblack;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
+import java.util.List;
 
 /**
  * Created by Anthony on 3/6/2017.
@@ -13,7 +16,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 class StrategyDbHelper extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 3;
     private static final String DATABASE_NAME = "Strategy.db";
 
     private static final String SQL_CREATE_STRATEGY_ENTRIES =
@@ -22,6 +25,7 @@ class StrategyDbHelper extends SQLiteOpenHelper {
                     StrategyContract.StrategyEntry.COLUMN_NAME + " TEXT," +
                     StrategyContract.StrategyEntry.COLUMN_MIN_BET + " INT," +
                     StrategyContract.StrategyEntry.COLUMN_MAX_BET + " INT," +
+                    StrategyContract.StrategyEntry.COLUMN_POSITION + " INT," +
                     StrategyContract.StrategyEntry.COLUMN_STRATEGY_CHOICE + " INT)";
 
     private static final String SQL_CREATE_HISTORY_ENTRIES =
@@ -64,7 +68,7 @@ class StrategyDbHelper extends SQLiteOpenHelper {
                 StrategyContract.StrategyEntry.COLUMN_MAX_BET,
                 StrategyContract.StrategyEntry.COLUMN_STRATEGY_CHOICE,
         };
-        String sortOrder = StrategyContract.StrategyEntry.COLUMN_NAME+ " COLLATE NOCASE ASC";
+        String sortOrder = StrategyContract.StrategyEntry.COLUMN_POSITION+ " ASC";
         return db.query(
                 StrategyContract.StrategyEntry.TABLE_NAME,
                 projection,
@@ -129,17 +133,36 @@ class StrategyDbHelper extends SQLiteOpenHelper {
 
     long add(Strategy strategy){
         SQLiteDatabase db = this.getWritableDatabase();
+        long cnt = DatabaseUtils.queryNumEntries(db, StrategyContract.StrategyEntry.TABLE_NAME);
 
         ContentValues values = new ContentValues();
         if(strategy._id > 0) {values.put(StrategyContract.StrategyEntry._ID, strategy._id);}
         values.put(StrategyContract.StrategyEntry.COLUMN_MIN_BET, strategy.minBet);
         values.put(StrategyContract.StrategyEntry.COLUMN_MAX_BET, strategy.maxBet);
+        values.put(StrategyContract.StrategyEntry.COLUMN_POSITION, cnt);
         values.put(StrategyContract.StrategyEntry.COLUMN_STRATEGY_CHOICE, strategy.strategyChoice);
         values.put(StrategyContract.StrategyEntry.COLUMN_NAME, strategy.name);
         long id = db.insert(StrategyContract.StrategyEntry.TABLE_NAME, null, values);
         db.close();
 
         return id;
+    }
+
+    void updatePositions(List<Strategy> strategyList){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String selection = StrategyContract.StrategyEntry._ID+"=?";
+
+        int i = 0;
+        for(Strategy strategy: strategyList){
+            ContentValues values = new ContentValues();
+            values.put(StrategyContract.StrategyEntry.COLUMN_POSITION, i);
+            String[] selectionArgs = {String.valueOf(strategy._id)};
+            db.update(StrategyContract.StrategyEntry.TABLE_NAME, values, selection, selectionArgs);
+
+            i++;
+        }
+        db.close();
     }
 
     void update(Strategy strategy){
