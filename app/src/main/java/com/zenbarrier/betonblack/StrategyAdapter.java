@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -22,7 +23,7 @@ class StrategyAdapter extends RecyclerView.Adapter<StrategyAdapter.ViewHolder> {
     private Context mContext;
     private OnStartDragListener mDragListener;
 
-    public interface OnStartDragListener {
+    interface OnStartDragListener {
 
         /**
          * Called when a view is requesting a start of a drag.
@@ -38,12 +39,6 @@ class StrategyAdapter extends RecyclerView.Adapter<StrategyAdapter.ViewHolder> {
             super(itemView);
             view = itemView;
         }
-    }
-
-    void onItemMove(int fromPosition, int toPosition){
-        Strategy prev = mStrategyList.remove(fromPosition);
-        mStrategyList.add(toPosition > fromPosition ? toPosition - 1 : toPosition, prev);
-        notifyItemMoved(fromPosition, toPosition);
     }
 
     StrategyAdapter(Context context, List<Strategy> strategyList, OnStartDragListener dragListener){
@@ -106,6 +101,17 @@ class StrategyAdapter extends RecyclerView.Adapter<StrategyAdapter.ViewHolder> {
         dbHelper.deleteStrategy(id);
     }
 
+    void onItemMove(int fromPosition, int toPosition){
+        Strategy prev = mStrategyList.remove(fromPosition);
+        Log.d("Move", prev.name+" moved from "+fromPosition+" to "+toPosition);
+        mStrategyList.add(toPosition, prev);
+        notifyItemMoved(fromPosition, toPosition);
+    }
+
+    void updatePositions() {
+        StrategyDbHelper dbHelper = new StrategyDbHelper(mContext);
+        dbHelper.updatePositions(mStrategyList);
+    }
 
     void addItem(int position, Strategy strategy) {
         mStrategyList.add(position, strategy);
