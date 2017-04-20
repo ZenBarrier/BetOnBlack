@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -103,7 +102,6 @@ class StrategyAdapter extends RecyclerView.Adapter<StrategyAdapter.ViewHolder> {
 
     void onItemMove(int fromPosition, int toPosition){
         Strategy prev = mStrategyList.remove(fromPosition);
-        Log.d("Move", prev.name+" moved from "+fromPosition+" to "+toPosition);
         mStrategyList.add(toPosition, prev);
         notifyItemMoved(fromPosition, toPosition);
     }
