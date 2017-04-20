@@ -64,7 +64,7 @@ class StrategyDbHelper extends SQLiteOpenHelper {
                 StrategyContract.StrategyEntry.COLUMN_MAX_BET,
                 StrategyContract.StrategyEntry.COLUMN_STRATEGY_CHOICE,
         };
-        String sortOrder = StrategyContract.StrategyEntry.COLUMN_NAME + " ASC";
+        String sortOrder = StrategyContract.StrategyEntry.COLUMN_NAME+ " COLLATE NOCASE ASC";
         return db.query(
                 StrategyContract.StrategyEntry.TABLE_NAME,
                 projection,
