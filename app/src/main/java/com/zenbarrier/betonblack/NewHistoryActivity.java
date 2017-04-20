@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
