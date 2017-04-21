@@ -9,6 +9,8 @@
         For more information, see https://support.google.com/admob/answer/3052638
     <!- -->
     <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="banner_ad_unit_main_id">ca-app-pub-6809424072521463/6204144813</string>
+    <string name="banner_ad_unit_game_id">ca-app-pub-6809424072521463/9157611210</string>
     <string name="main_button">Create new Strategy</string>
     <string name="title_activity_new_strategy">NewStrategyActivity</string>
     <string name="newstrategy_strategyname">Name this strategy</string>
