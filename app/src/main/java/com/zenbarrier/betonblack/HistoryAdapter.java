@@ -84,7 +84,7 @@ class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHolder>{
             imageViewManual.setImageResource(R.drawable.ic_casino);
         }
         else{
-            imageViewManual.setImageResource(R.drawable.ic_roulette);
+            imageViewManual.setImageResource(R.drawable.ic_roulette_color);
         }
 
         holder.view.setOnLongClickListener(new View.OnLongClickListener() {
